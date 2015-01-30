@@ -1,0 +1,62 @@
+Fresh on our Radar: React Native
+================================
+
+The big news of this week's [React.js Conf](http://conf.reactjs.com) was the announcement of React Native, a way to build native iOS and Android apps with Facebook's React.
+
+React Native is Facebook's solution for writing "hybrid" web apps - with a twist. Traditional hybrid apps wrap a WebView (lightweight browser, [more information](http://www.smashingmagazine.com/2014/10/21/providing-a-native-experience-with-web-technologies)) and your app's HTML, CSS, and JavaScript code in a native app package. When the app is opened, a web view gets initialised and your code gets executed on it. Apps written with React Native, however, do not require a WebView but render directly to native views. This approach is similar to what [Titanium](http://www.appcelerator.com/titanium) does, with some [differences](https://news.ycombinator.com/item?id=8962528), though.
+
+### What is React?
+When released: "The V in MVC" (ironic comment "'React is the V' just like my iPhone is just a phone. #reactjsconf" [https://twitter.com/_chenglou/status/560699868641886208](https://twitter.com/_chenglou/status/560699868641886208))
+
+Facebook has a history with HTML5 and native apps: http://techcrunch.com/2012/09/11/mark-zuckerberg-our-biggest-mistake-with-mobile-was-betting-too-much-on-html5
+which prompted Sencha to prove them wrong and release the following demo where they rebuilt Facebook's iOS app with Sencha in HTML5: http://www.sencha.com/blog/the-making-of-fastbook-an-html5-love-story
+
+Problem remains: some stuff you cannot do with web views.
+
+[React.js Conf 2015 Keynote - Introducing React Native](https://www.youtube.com/watch?v=KVZ-P-ZI6W4) (Tom Occhino).
+
+Pros
++ "Learn once run anywhere!" developers only need to know React to write apps for the web, Android, and iOS.
++ Requires no web view, JavaScript runtime is much smaller.
++ Renders native views with native behaviour.
++ Is already being used in production: [Facebook Groups on iOS](https://itunes.apple.com/us/app/facebook-groups/id931735837).
+
+
+Cons
++ Dependent on API that React Native provides. You can only call native classes and methods (Objective C/Swift on iOS or Java on Android) from your React code (JavaScript) that are supported by React Native.
++ You will have more power and control - especially in terms of performance fine-tuning - when you write 
++ Requires a JavaScript runtime that pure native apps don't need.
++ Hasn't been released yet :) But is coming in the next couple of days.
+
+
+### NOT "WRITE ONCE RUN ANYWHERE" BUT "LEARN ONCE RUN ANYWHERE"
+
+[Hacker News Thread](https://news.ycombinator.com/item?id=8961551)
+
+
+"The virtual dom is an implementation detail of React.js. React Native demonstrates that many rendering contexts are possible." (@fisherwebdev, https://twitter.com/fisherwebdev/status/560504428613337088)
+
+
+https://medium.com/@dan_abramov/youre-missing-the-point-of-react-a20e34a51e1a
+
+[Michael Chan](https://twitter.com/chantastic)'s notes drawings:
+[Notes from @tomocchino's #reactjsconf Keynote](https://twitter.com/chantastic/status/560514125583749120)
+[Notes from @Vjeux's #reactjsconf keynote on React Native](https://twitter.com/chantastic/status/560881757948375040)
+
+
+Coming soon:
+[https://github.com/facebook/react-native](https://github.com/facebook/react-native) (source: https://twitter.com/spikebrehm/status/560981338455416833)
+
+
+
+Sources
++ [Hacker News Thread](https://news.ycombinator.com/item?id=8961551)
++ [ReactJS News](http://twitter.com/reactjsnews)
+
+The people behind it
++ Jordan Walke (one of the original React developers)
++ Pete Hunt (one of React's lead developers, recently left Instagram/Facebook to found his own startup)a
++ Christopher Chedeaux (@vjeux)
++ [Jing Chen](https://twitter.com/jingc) React & Flux engineer
++ [Bill Fisher](https://twitter.com/fisherwebdev) React & Flux engineer
++ [Tom Occhino](https://twitter.com/tomocchino) React project manager
