@@ -1,13 +1,104 @@
-Fresh on our Radar: React Native
-================================
+### Notes
++ https://twitter.com/MattStopa/status/561966943255953408
+"JS was crawling. jQuery was walking. Ember was taking the bus. @reactjs is like taking a private GulfStream and getting off into a R.Royce"
 
-The big news of this week's [React.js Conf](http://conf.reactjs.com) was the announcement of React Native, a way to build native iOS and Android apps with Facebook's React.
++ Layout discussion - flexbox vs Cassowary:
+https://twitter.com/nikitonsky/status/561941079038390273
 
-React Native is Facebook's solution for writing "hybrid" web apps - with a twist. Traditional hybrid apps wrap a WebView (lightweight browser, [more information](http://www.smashingmagazine.com/2014/10/21/providing-a-native-experience-with-web-technologies)) and your app's HTML, CSS, and JavaScript code in a native app package. When the app is opened, a web view gets initialised and your code gets executed on it. Apps written with React Native, however, do not require a WebView but render directly to native views. This approach is similar to what [Titanium](http://www.appcelerator.com/titanium) does, with some [differences](https://news.ycombinator.com/item?id=8962528), though.
++ bridge between JS and Obj-C
++ colocating markup with JS
+
++ React Native development experience demo: https://www.dropbox.com/s/0o6pa3jdsueeovc/react-native-editing.mp4 (source: https://twitter.com/ryanflorence/status/561342337461125121)
+
+---
+
+title: Fresh on our Radar: React Native
+slug: fresh-on-our-radar-react-native
+publication date: 2015-02-02
+category: Radar
+people: Paul
+
+summary:
+React Native is Facebook's just-announced open-source solution for building native iOS and Android applications with JavaScript and React.
+
+body:
+
+<style>
+  small {
+    font-size: 0.75em;
+    color: #777;
+  }
+  small a, small strong {
+    font-size: 1em;
+  }
+</style>
+
+### TL;DR
+
++ React Native lets you build native apps with JavaScript and React without using WebViews and without a compilation step.
++ Not "write once run anywhere" but "learn once, write anywhere". If you know React, you can now build native apps, but not with the exact same code for all platforms.
++ Same development experience as for web apps: no compilation step, changes appear instantly.
++ To be released soon; already in production use in [Facebook Groups](https://itunes.apple.com/us/app/facebook-groups/id931735837) on iOS
+
+---
+
+### Traditional Hybrid Mobile Applications
+The big news of last week's [React.js Conf](http://conf.reactjs.com) was the announcement of React Native, Facebook's soon-to-be-released open-source solution for building native iOS and Android apps with React.
+
+React Native is a new solution for writing hybrid web apps - with a twist. There are two kinds of traditional hybrid apps:
+
+**1. WebView app**  
+The first kind wraps your app's HTML, CSS, and JavaScript code in a native app container that runs a WebView, a very lightweight browser. [Phonegap](http://phonegap.com) and [Apache Cordova](https://cordova.apache.org) are the most common solutions for packaging such apps and there are special frameworks to recreate native UI elements and interactions in HTML, such as [jQuery Mobile](http://jquerymobile.com), [ionic](http://ionicframework.com), [Sencha Touch](http://www.sencha.com/products/touch), or [Kendo UI](http://www.telerik.com/kendo-ui). When the app is opened, a WebView gets initialised and your code gets executed on it. The advantage of these apps is that they can use the exact same code as your web app. In practice, however, you'll be aiming to emulate a native look and feel, which means different code than you desktop UI and different code for iOS and Android - this is why the use of mobile UI frameworks is so common. The problem with WebView apps is that their interactions never quite feel like native apps. They're usually slower and, according to the Facebook team, their attempts of rebuilding touch interactions in HTML5 never came close.
+Facebook has a history with WebView apps. In 2012 they rewrote their WebView hybrid app and replaced it with native apps. Zuckerberg called betting on HTML5 their [biggest mistake](http://techcrunch.com/2012/09/11/mark-zuckerberg-our-biggest-mistake-with-mobile-was-betting-too-much-on-html5). Others pronounced the web dead: [Is the web really dead?](http://www.confreaks.com/videos/1814-thenextweb2012-is-the-web-really-dead).  
+The Sencha Touch team's reaction was to rebuild Facebook's native iOS app in HTML5: [The Making of Fastbook: An HTML5 Love Story](http://www.sencha.com/blog/the-making-of-fastbook-an-html5-love-story).
+
+<!-- <iframe src="//player.vimeo.com/video/55486684" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> -->
+
+**2. Compiled hybrid app**  
+Solutions like [Xamarin](http://xamarin.com) (C# to native code) or older versions of [Appcelerator Titanium](http://www.appcelerator.com/titanium) (!? see [note](#titanium-note) below) take another approach. Instead of loading a barebone browser to run you HTML and JavaScript, they compile your code to native code so they can render directly to native views. Apps written this way have a more native feel since styling and behaviour doesn't have to be rebuilt in HTML.
+
+### React Native
+Apps written with React Native fall neither in the first nor the second category, yet it's still apt to call them hybrid apps - you still write JavaScript and HTML and get an app that can be loaded from the app store.  
+Like compiled native apps, React Native uses native views. You get the same platform-specific look and feel on Android and iOS that proper native apps offer (those written in Objective-C or Java). There is, however, no compilation step involved. Similar to WebView apps, React Native requires an extra component to work, but instead of a WebView, that's just a JavaScript runtime - [JavaScriptCore](http://trac.webkit.org/wiki/JavaScriptCore) on i       OS.  
+Applications built with React Native use a special XCode/Android SDK container. When you load them, they feed your React code (JavaScript) to a JavaScript runtime that asynchronously communicates with a native thread (main thread).
+
+#### Pros
++ Renders native views with native behaviour and interactions.
++ "Learn once, write anywhere"; developers only need to know React to write apps for the web, Android, and iOS.
++ Brings React's architecture and concepts to native.
++ Requires no WebView; the JavaScript runtime React Native uses is much smaller.
++ There's no compilation step - much better development experience and speed: you can build native apps like you develop web apps.
++ Is already being used in production: [Facebook Groups on iOS](https://itunes.apple.com/us/app/facebook-groups/id931735837).
+
+#### Cons
++ You're leaving the web platform and its open standards and now rely on vendor SDKs.
++ Dependent on API that React Native provides. You can only call native classes and methods (Objective C on iOS or Java on Android) from your React code (JavaScript) that are supported by React Native.
++ You will have more power and control - especially in terms of performance fine-tuning - when you write proper native apps
++ Requires a JavaScript runtime that pure native apps don't need.
++ Hasn't been released yet :) But is coming in the next couple of weeks.
+
+
+
+<a name='titanium-note'></a>
+<small>
+**Side Note on Titanium**  
+I'm a little confused about the current state of affairs in Titanium - and I'm [not the only one](https://twitter.com/wycats/status/561624207591632897). My understanding is that the old Titanium Alloy used to have a compiler, then came Ti.next, which uses a JavaScript runtime as well, and which is what we have today!?!  
+More information on the differences between Titanium and React Native: [HackerNews comment](https://news.ycombinator.com/item?id=8962528)  
+Parts of the Appcelerator community were .. saddened .. by the release of React Native: [http://www.tidev.io/2015/01/30/reacting-to-react-native](http://www.tidev.io/2015/01/30/reacting-to-react-native)
+</small>
+
+More information:
+
++ [Hybrid Mobile Apps: Providing A Native Experience With Web Technologies](http://www.smashingmagazine.com/2014/10/21/providing-a-native-experience-with-web-technologies)
++ "Four Ways To Build A Mobile Application": [Part 1: Native iOS](http://www.smashingmagazine.com/2013/11/22/four-ways-to-build-a-mobile-app-part1-native-ios) &ndash; [Part 2: Native Android](http://www.smashingmagazine.com/2014/01/10/four-ways-to-build-a-mobile-app-part2-native-android) &ndash; [Part 3: PhoneGap](http://www.smashingmagazine.com/2014/02/11/four-ways-to-build-a-mobile-app-part3-phonegap) &ndash; [Part 4: Appcelerator Titanium](http://www.smashingmagazine.com/2014/03/10/4-ways-build-mobile-application-part4-appcelerator-titanium)
 
 ### What is React?
 When released: "The V in MVC" (ironic comment "'React is the V' just like my iPhone is just a phone. #reactjsconf" [https://twitter.com/_chenglou/status/560699868641886208](https://twitter.com/_chenglou/status/560699868641886208))
 
+https://medium.com/@dan_abramov/youre-missing-the-point-of-react-a20e34a51e1a
+
+
+### Hybrid Apps
 Facebook has a history with HTML5 and native apps: http://techcrunch.com/2012/09/11/mark-zuckerberg-our-biggest-mistake-with-mobile-was-betting-too-much-on-html5
 which prompted Sencha to prove them wrong and release the following demo where they rebuilt Facebook's iOS app with Sencha in HTML5: http://www.sencha.com/blog/the-making-of-fastbook-an-html5-love-story
 
@@ -15,48 +106,57 @@ Problem remains: some stuff you cannot do with web views.
 
 [React.js Conf 2015 Keynote - Introducing React Native](https://www.youtube.com/watch?v=KVZ-P-ZI6W4) (Tom Occhino).
 
-Pros
-+ "Learn once run anywhere!" developers only need to know React to write apps for the web, Android, and iOS.
-+ Requires no web view, JavaScript runtime is much smaller.
-+ Renders native views with native behaviour.
-+ Is already being used in production: [Facebook Groups on iOS](https://itunes.apple.com/us/app/facebook-groups/id931735837).
-
-
-Cons
-+ Dependent on API that React Native provides. You can only call native classes and methods (Objective C/Swift on iOS or Java on Android) from your React code (JavaScript) that are supported by React Native.
-+ You will have more power and control - especially in terms of performance fine-tuning - when you write 
-+ Requires a JavaScript runtime that pure native apps don't need.
-+ Hasn't been released yet :) But is coming in the next couple of days.
-
-
 ### NOT "WRITE ONCE RUN ANYWHERE" BUT "LEARN ONCE RUN ANYWHERE"
 
-[Hacker News Thread](https://news.ycombinator.com/item?id=8961551)
++ for your app's logic (JavaScript) but also for styling and layouting.
 
+
+### How does it work?
+
+"instead of DOM commands we output native commands" (Chedeau 5:10)
++ JS is NOT transpiled to Objective C/Java. React Native runs a JavaScript engine - JavaScriptCore (iOS JS engine)
+
++ main thread and asynchronous JavaScript thread.
++ diff algorithm (like the Virtual DOM - except that there is no DOM in native apps)
+
++ different JSX code (what you'd call templates in other JS MVCs - in React templates don't live in separate files but are integrated into the render method of components - for good reasons and, if you believe the React guys, not violating but providing [good separation of concerns](https://www.youtube.com/watch?v=x7cQ3mrcKaY&feature=youtu.be&t=2m43s)): `<View>` instead of `<div>` and `<Text>` instead of `<span>`. JSX is a declarative API (using React) for ObjectiveC / Java classes. `<View>` becomes [UIView](https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIView_Class/index.html) on iOS and [View](http://developer.android.com/reference/android/view/View.html) on Android.
++ you will usually write different JSX code for iOS and Android - while some common simpler elements like `<View>` and `<Text>` are basically the same across platforms, the Android and iOS SDKs are quite different resulting in UIs with different behaviour.
 
 "The virtual dom is an implementation detail of React.js. React Native demonstrates that many rendering contexts are possible." (@fisherwebdev, https://twitter.com/fisherwebdev/status/560504428613337088)
 
 
-https://medium.com/@dan_abramov/youre-missing-the-point-of-react-a20e34a51e1a
+#### Styles
+CSS in your JavaScript via inline styles. Cf. [React: CSS in your JS](http://vimeo.com/116209150) - Christopher Chedeau. NationJS 2014.
+Next logical step after they merged templates (HTML) with Views (as in M_V_C) into components is to merge the CSS in as well. The holy triad of HTML, CSS, and JavaScript with the golden rules of "no inline styles" and "non-obtrusive JavaScript" as guarantors of a good separation of concerns gradually became a mere separation of technologies. By bundling a component with its HTML (via JSX in the render method) and styles, we gain a _better_ separation of concerns. The component contains all the CSS it requires. The only thing new for us as programmers is that there are no separate template and CSS _files_ anymore. Its an advantage not to have a component's styles live in a global style sheet - e.g. for loading styles incrementally or for dead code elimination. With a separation of technolgies in place, you need all kinds of hacks to recreate a good separation of concerns again.
+I understand what the React guys have been after in this matter a lot better since they started moving their CSS into components as well.
+
+Other advantages:
++ JS has variables built in (no need to learn and maintain another language like SASS - think of all the [compilation problems](https://twitter.com/Bountysource/status/494490343362949120) there...)
++ no problems with a global namespace (SMACSS's long-ass names like `.my-compontent__avatar__label.as-large` only exist to work around this issue).
 
 [Michael Chan](https://twitter.com/chantastic)'s notes drawings:
 [Notes from @tomocchino's #reactjsconf Keynote](https://twitter.com/chantastic/status/560514125583749120)
 [Notes from @Vjeux's #reactjsconf keynote on React Native](https://twitter.com/chantastic/status/560881757948375040)
 
 
+### Reactions
+Lots of hype.
+
 Coming soon:
 [https://github.com/facebook/react-native](https://github.com/facebook/react-native) (source: https://twitter.com/spikebrehm/status/560981338455416833)
 
 
-
-Sources
-+ [Hacker News Thread](https://news.ycombinator.com/item?id=8961551)
-+ [ReactJS News](http://twitter.com/reactjsnews)
-
-The people behind it
+### The people behind it
 + Jordan Walke (one of the original React developers)
 + Pete Hunt (one of React's lead developers, recently left Instagram/Facebook to found his own startup)a
-+ Christopher Chedeaux (@vjeux)
++ Christopher Chedeau (@vjeux)
 + [Jing Chen](https://twitter.com/jingc) React & Flux engineer
 + [Bill Fisher](https://twitter.com/fisherwebdev) React & Flux engineer
 + [Tom Occhino](https://twitter.com/tomocchino) React project manager
+
+### Sources
++ [Hacker News Thread](https://news.ycombinator.com/item?id=8961551)
++ [ReactJS News](http://twitter.com/reactjsnews)
++ [Hacker News Thread on React Native](https://news.ycombinator.com/item?id=8961551)
+
+Title Image: "Meteorology research vehicle". OSU Special Collections & Archives. [https://www.flickr.com/photos/osucommons/6258266117](https://www.flickr.com/photos/osucommons/6258266117).
