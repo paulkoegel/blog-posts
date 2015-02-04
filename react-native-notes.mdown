@@ -1,0 +1,24 @@
+#### Styles
+CSS in your JavaScript via inline styles. Cf. [React: CSS in your JS](http://vimeo.com/116209150) - Christopher Chedeau. NationJS 2014.
+Next logical step after they merged templates (HTML) with Views (as in M_V_C) into components is to merge the CSS in as well. The holy triad of HTML, CSS, and JavaScript with the golden rules of "no inline styles" and "non-obtrusive JavaScript" as guarantors of a good separation of concerns gradually became a mere separation of technologies. By bundling a component with its HTML (via JSX in the render method) and styles, we gain a _better_ separation of concerns. The component contains all the CSS it requires. The only thing new for us as programmers is that there are no separate template and CSS _files_ anymore. Its an advantage not to have a component's styles live in a global style sheet - e.g. for loading styles incrementally or for dead code elimination. With a separation of technolgies in place, you need all kinds of hacks to recreate a good separation of concerns again.
+I understand what the React guys have been after in this matter a lot better since they started moving their CSS into components as well.
+
+Other advantages:
++ JS has variables built in (no need to learn and maintain another language like SASS - think of all the [compilation problems](https://twitter.com/Bountysource/status/494490343362949120) there...)
++ no problems with a global namespace (SMACSS's long-ass names like `.my-compontent__avatar__label.as-large` only exist to work around this issue).
+
+[Michael Chan](https://twitter.com/chantastic)'s notes drawings:
+[Notes from @tomocchino's #reactjsconf Keynote](https://twitter.com/chantastic/status/560514125583749120)
+[Notes from @Vjeux's #reactjsconf keynote on React Native](https://twitter.com/chantastic/status/560881757948375040)
+
+
+
+### Notes
+
+### What is React?
+When released: "The V in MVC" (ironic comment "'React is the V' just like my iPhone is just a phone. #reactjsconf" [https://twitter.com/_chenglou/status/560699868641886208](https://twitter.com/_chenglou/status/560699868641886208))
+
+http://www.infoq.com/author/Adam-Ernst (source: https://twitter.com/Vjeux/status/562039379556712448)
+React vs titanium: https://twitter.com/swannodette/status/561623363630923776
+
++ React Native development experience demo: https://www.dropbox.com/s/0o6pa3jdsueeovc/react-native-editing.mp4 (source: https://twitter.com/ryanflorence/status/561342337461125121)
