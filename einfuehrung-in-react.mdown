@@ -1,0 +1,18 @@
+Einführung in React
+===================
+
+## Was ist React?
+React ist eine JavaScript-Bibliothek zum Erstellen von Benutzeroberflächen. Sie wurde 2013 von Facebook unter [BSD-Lizenz](https://de.wikipedia.org/wiki/BSD-Lizenz) veröffentlicht und schlägt seitdem immer größere Wellen und beeinflusst nachhaltig die gesamte JavaScript-Frontendlandschaft.
+React wird verwendet von Facebook, Instagram, Whatsapp, Yahoo, AirBnB, der Khan Academy, dem Atom editor, HipChat, der BBC und [vielen anderen mehr](https://github.com/facebook/react/wiki/Sites-Using-React).
+
+#### Eine Bibliothek wie vom anderen Stern
+Die ersten Reaktionen auf React waren verhalten. Zum einen, weil React auf den ersten Blick fremdartig ist. Es geht einige Probleme völlig anders an als bisherige Lösungen. Zum anderen, weil viele enttäuscht waren in React kein mächtiges Framework zu finden.
+React ist eine Bibliothek, die sich - in MVC gedacht - gezielt um die View- und wenig um die Controller-Schicht kümmert. Es will ein flexibles Werkzeug sein, das es erlaubt Anwendungen in ihrer eigenen Sprache - und nicht der Sprache eines Frameworks - zu modellieren.
+React machte schnell vor allem wegen seines virtuellen DOMs und der hervorragenden Rendering-Performanz von sich reden. Heute ist es in aller Munde, Ideen aus React haben ihren Weg in [Ember](https://www.isemberfastyet.com) und viele [andere Bibliotheken](https://github.com/staltz/cycle) gefunden.
+Anfänglich war Reacts Andersartigkeit (bswp. JSX) eher ein Fluch, der die Leute die Bibliothek schnell beiseite legen ließ. Gerade begreifen wir immer mehr welche Vorteile die neuen Wege, die React uns beschreiten lässt, mit sich bringen. Das Netz wimmelt vor begeisterten Erfahrungsberichten und immer mehr React-Anwendungen sprießen aus dem Boden.
+Höchste Zeit, dass wir uns mit React beschäftigen!
+
+
+
+### Links
++ ["Legal"-Datei zur Lizenz](https://code.facebook.com/posts/1639473982937255/updating-our-open-source-patent-grant)
