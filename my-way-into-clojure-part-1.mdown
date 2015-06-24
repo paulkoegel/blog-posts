@@ -1,0 +1,520 @@
+<!--
+My Way into Clojure: Building a Card Game with Om - Part 1
+==========================================================
+
+## Abstract
+In order to gain hands-on experiences with functional programming, I wrote an HTML5 card game with Om, a “JavaScript MVC” written in ClojureScript.  
+This first post starts our journey travelling down the Clojure rabbit hole. I'll share my experiences getting started with Clojure, introduce the language's features and explain why its LISP syntax is a logical consequence of its deep infatuation with simplicity.
+
+-->
+
+<script type="text/javascript">
+  WebFontConfig = {
+    google: { families: ['Droid+Serif:400,700,700italic,400italic:latin', 'Droid+Sans:400,700:latin', 'Droid+Sans+Mono::latin'] }
+  };
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })();
+
+  window.onload = function () {
+
+    // https://stackoverflow.com/questions/187619/is-there-a-javascript-solution-to-generating-a-table-of-contents-for-a-page/187946#187946
+    var demoIframes = document.getElementsByClassName("omingard-demo");
+    for (var n = 0; n < demoIframes.length; n++) {
+      document.getElementsByClassName("omingard-demo")[n].style.height = "348px";
+    }
+
+    var toc = "";
+    var level = 0;
+    var container = document.getElementsByClassName("a-continuous-text")[0];
+
+    container.innerHTML =
+      container.innerHTML.replace(
+        /<h([\d])>([^<]+)<\/h([\d])>/gi,
+        function (str, openLevel, titleText, closeLevel) {
+          if (openLevel != closeLevel) {
+            return str;
+          }
+
+          if (openLevel > level) {
+            toc += (new Array(openLevel - level + 1)).join("<ul>");
+          } else if (openLevel < level) {
+            toc += (new Array(level - openLevel + 1)).join("</ul>");
+          }
+
+          level = parseInt(openLevel);
+
+          var anchor = titleText.replace(/ /g, "_");
+          toc += "<li><a href=\"#" + anchor + "\">" + titleText
+              + "</a></li>";
+
+          return "<a href=\"#" + anchor + "\" name=\"" + anchor + "\"><h" + openLevel + ">"
+                 + titleText + "</h" + closeLevel + "></a>";
+        }
+      );
+
+    if (level) {
+      toc += (new Array(level + 1)).join("</ul>");
+    }
+
+    document.getElementById("story-toc").innerHTML += toc;
+  };
+</script>
+
+<style type="text/css">
+
+  #story-toc li {
+    line-height: 1.2;
+  }
+
+  #story-toc ul ul ul {
+    margin-bottom: 0.5em;
+  }
+
+  #story-toc li a {
+    font-size: 16px;
+  }
+
+  .cf:before,.cf:after{display:table;content:" "}.cf:after{clear:both}.cf{*zoom:1}
+
+  /*
+  .a-cite.as-big {
+    font-style: normal;
+  }
+  .a-continuous-text {
+   width: 90%;
+   margin: 0 auto;
+  }
+  .a-continuous-text, .a-continuous-text p, .a-continuous-text a, .a-continuous-text em, .a-continuous-text strong, .a-continuous-text li {
+    font-family: 'Droid Serif';
+    font-size: 20px;
+    line-height: 1.6;
+  }
+  .a-continuous-text a {
+    color: #008AFF;
+  }
+  h2 {
+    margin-top: 4rem;
+  }
+  h3 { margin-top: 2.7rem; }
+  .a-continuous-text iframe {
+    margin: 20px 0;}
+  */
+
+  .a-continuous-text blockquote {
+    margin: 30px 0;
+    text-align: left;
+    padding-bottom: 9px;
+  }
+ 
+  .a-continuous-text blockquote p {
+    font-size: 20px;
+    text-align: left;
+    color: #444;
+    padding-left: 30px;
+    margin: 10px auto;
+  }
+
+  .a-continuous-text blockquote p a, .a-continuous-text blockquote p em {
+    font-size: 20px;
+    font-family: "ff-tisa-web-pro", Garamond, Georgia, serif;
+  }
+
+  .a-continuous-text blockquote p {
+    font-family: "ff-tisa-web-pro", Garamond, Georgia, serif;
+    font-style: normal;
+    line-height: 30px;
+  }
+
+  .long-blockquote {
+    font-style: normal;
+    text-align: left;
+    width: 100%;
+    font-size: 17px;
+    line-height: 1.6em;
+    margin: 20px 0px;
+    padding: 10px 20px;
+  }
+  .long-blockquote strong, .long-blockquote b, .long-blockquote a {
+    font-size: 17px;
+  }
+
+  .avatar-list {
+    list-style-type: none;
+    margin-left: 0;
+  }
+
+  .avatar-list li {
+    float: left;
+    width: 204px;
+    margin-right: 20px;
+  }
+
+  .avatar-list p, .avatar-list a {
+    font-size: 16px;
+  }
+
+  .avatar-wrapper {
+    border: 1px solid #DDD;
+    width: 130px;
+    height: 130px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+   }
+
+  .avatar-wrapper img {
+    width: 118px;
+    height: 118px;
+    margin: 5px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+   }
+   p.small, p.small a {
+     font-size: 13px;
+   }
+   .play-button {
+     background-color: #00CB7A;
+   }
+   .play-button:hover {
+     background-color: #00b36b;
+   }
+   .omingard-demo {
+     margin: 0 !important;
+   }
+   .a-cite--author img {
+     width: 250px;
+   }
+   .a-continuous-text code {
+     font-family: 'Droid Sans Mono';
+   }
+   .omomom{
+     text-align: center;
+     margin-top: 20px;
+     margin-bottom: 20px;
+   }
+   .a-header--text--headline {
+     text-shadow: rgba(0, 0, 0, 0.6) 0 0 8px;
+   }
+</style>
+
+<div class='cf'>
+  <a href="https://omingard.5apps.com" style='float: left; margin-right: 20px'>
+    <button class="play-button">&#9654; Play Omingard</button>
+  </a>
+
+  <a href="https://github.com/paulwittmann/omingard">
+    <button style='background-color: gray'>&#955; Source Code</button>
+  </a>
+</div>
+
+<hr>
+
+<div style="font-family: gt_pressura_bold,Consolas,sans-serif; font-size: 1.6875rem; margin-bottom: 20px">
+  Dramatis personæ
+</div>
+
+<ul class='avatar-list cf'>
+  <li>
+    <div class="avatar-wrapper">
+      <a href="https://twitter.com/richhickey"><img src="https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/rich_hickey.jpg"></a>
+    </div>
+    <div style="font-family: gt_pressura_bold,Consolas,sans-serif; font-size: 21px">Rich Hickey</div>
+    <p><a href="http://cognitect.com">Cognitect</a>.<br> Inventor of Clojure. <a href="https://twitter.com/richhickey">@richhickey</a></p>
+  </li>
+  <li>
+    <div class="avatar-wrapper">
+      <a href="https://twitter.com/swannodette"><img src="https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/david_nolen.jpg"></a>
+    </div>
+    <div style="font-family: gt_pressura_bold,Consolas,sans-serif; font-size: 21px">David Nolen</div>
+    <p><a href="http://cognitect.com">Cognitect</a>.<br> Primary maintainer of ClojureScript, creator of Om. <a href="https://twitter.com/swannodette">@swannodette</a></p>
+  </li>
+  <li>
+    <div class="avatar-wrapper">
+      <a href="https://twitter.com/floydophone"><img src="https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/pete_hunt.jpg"></a>
+    </div>
+    <div style="font-family: gt_pressura_bold,Consolas,sans-serif; font-size: 21px">Pete Hunt</div>
+    <p>Instagram.<br> Primary maintainer of React. <a href="https://twitter.com/floydophone">@floyodphone</a></p>
+  </li>
+</ul>
+
+<p class="small">
+  Photos of David Nolen and Rich Hickey © and courtesy of <a href="https://secure.flickr.com/photos/lucasbridge">Mike Bridge</a>. Sources: <a href="https://secure.flickr.com/photos/lucasbridge/8058449485/in/photostream">David</a>, <a href="https://secure.flickr.com/photos/lucasbridge/8058501680">Rich</a>.
+</p>
+
+---
+
+<b style="font-size: 2.3125rem; font-family: gt_pressura_bold,Consolas,sans-serif; font-weight: normal">Contents</b>
+<div id='story-toc'></div>
+
+---
+
+## Introduction
+This two-part blog post tells the story of my venturing into Clojure. To get a better grasp of the language, I wanted to move beyond solving programming puzzles and build something tangible in the browser. [_Omingard_](https://omingard.5apps.com) is a Solitaire-like HTML5 card game built with Om, a ClojureScript interface to Facebook's React.  
+In this **first part**, “My Way into Clojure”, I'll provide some background on why I built Omingard and introduce the concepts behind Clojure. What's so fascinating about functional programming in general, and Clojure in particular, and why was the appearance of Om a game changer for me?  
+In the upcoming **second part**, “Building a Card Game with Om”, we'll look at how I built Omingard. What are the rules of the game, and what role do React, ClojureScript, Om, Leiningen, Garden, and Google Closure Tools play in its implementation? We'll also take a detailed look at the concepts behind Om, and how it achieves even faster performance than React.  
+
+## Motivation and Goals
+### Who I am & where I'm coming from
+[![Paul Wittmann (@wakkahari)](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/paul_wittmann_wakkahari.jpg)](https://twitter.com/wakkahari)
+
+I'm a Ruby and JavaScript web developer at [Railslove](http://www.railslove.com) with degrees in philosophy and English literature. [Functional programming](https://en.wikipedia.org/wiki/Functional_programming) (FP) offers a refreshing and exciting repose to the [object-oriented programming](https://en.wikipedia.org/wiki/Object-oriented_programming) (OOP) I'm faced with in my day job. Studying FP and concepts like Clojure's [immutable data structures](http://www.braveclojure.com/functional-programming/) helps me become a better programmer.  
+When working with [Ruby on Rails](http://rubyonrails.org) a lot, it feels liberating to leave behind the shackles of the framework ("your code calls a library, a framework calls your code"), and do some [coding with hand tools](https://www.youtube.com/watch?v=ShEez0JkOFw). Don't worry, I still think [“Rails is cool”](http://andrzejonsoftware.blogspot.de/2011/12/rails-is-still-cool.html). Clojure is just also cool - and probably even cooler ([1](http://blog.txus.io/2014/05/why-i-am-excited-about-clojure), [2](http://puppetlabs.com/blog/new-era-application-services-puppet-labs), [3](http://thecleancoder.blogspot.it/2010/08/why-clojure.html), [4](https://yow.eventer.com/yow-2013-1080/lessons-learned-from-adopting-clojure-by-jey-fields-1397), [5](http://www.pitheringabout.com/?p=1018)) - but I'm getting ahead of myself.  
+Besides a certain curiosity and hunger for new and interesting programming languages and concepts, I'm looking for a simpler, better “JavaScript MVC” (see <a href="#Provisio:_so-called_Javascript_MVC">proviso</a> below) to build user interfaces. I've extensively used [Backbone Marionette](http://marionettejs.com) in the past - to eventual frustration - and was very keen on trying out [React](https://facebook.github.io/react), the basis underlying Om. Coincidentally, React's creators were inspired by Clojure inventor [Rich Hickey](https://twitter.com/richhickey)'s notion of simplicity - I may be throwing around a lot of unfamiliar terms, but it's all coming together soon.
+
+### Let's go on a Trip through the Clojureverse
+[![“Still from Tarkovsky's Stalker”](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/stalker.jpg)](http://en.wikipedia.org/wiki/Stalker_%281979_film%29)  
+
+I assume this post will introduce most of its readers to several new concepts and solutions at once. The stack of discussed technologies is quite impressive and, from top to bottom, as follows:  
+
+1. [**Omingard**](https://github.com/paulwittmann/omingard) was built with a “JavaScript MVC” library called Om.
+2. [**Om**](https://github.com/swannodette/om) is written in ClojureScript and is built on top of a JavaScript library called [**React**](https://facebook.github.io/react).
+3. [**ClojureScript**](http://clojure.org/clojurescript) compiles to JavaScript but has Clojure semantics, it's as close to Clojure actual, which runs on the Java Virtual Machine (JVM), as JavaScript engines permit.
+4. [**Clojure**](https://en.wikipedia.org/wiki/Clojure), in turn, is a hosted functional programming language and a [**LISP**](https://en.wikipedia.org/wiki/Lisp_%28programming_language%29) dialect with immutable persistent data structures.
+
+I'm well aware that this is a lot to take in at once. This post is not meant to be a tutorial but is an opinionated experience report trying to introduce you to Clojure's core concepts. My aim is to broaden your horizon and whet your appetite for new, even _alien_ technologies.
+
+### Twofold Alien Technology
+![Lispers Logo](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/lispers_logo.png)  
+
+LISPers proudly call their language “alien technology”, meaning it's too good to be true. Superior technology from another planet handed to us by the gods.
+But LISP, Clojure, and many of the concepts we'll be talking about are predominantly _alien_ in the sense of _foreign_ to most programmers.  
+The good thing is I've been there already and hope you let me be your tour guide on a trip through the Clojureverse :)
+
+## Simplicity - the Driving Force behind Clojure and Om
+I've been interested in LISP and functional programming for a while but never got very much beyond browsing some books, playing with demo code, or dropping a couple `maps` and `reduces` in [Ruby](https://www.ruby-lang.org) or [Underscore.js](http://underscorejs.org).  
+[Clojure](https://en.wikipedia.org/wiki/Clojure) is a vibrant modern LISP that lends itself very well to functional programming. It first entered my radar in 2012, when Rich Hickey held the keynote at Rails Conf: [“Simplicity matters”](https://www.youtube.com/watch?v=rI8tNMsozo0). He defines **simplicity** and distinguishes it from its **false friend easiness** as follows:
+
+> “Simple” means one thing, “easy” another.  
+**Simple is the opposite of complex.** A thing is simple if it has no interleaving, if it has one purpose, one concept, one dimension, one task. Being simple does not imply one instance or one operation: it's about interleaving, not cardinality. Importantly, this means that simplicity is objective.  
+**Easy is the opposite of hard, or difficult.** A thing is easy if it's near to hand, if it's easy to get at (location), if it's near to our understanding (**familiarity**) or skill set or if it's within our capabilities. This means that ease is relative.  
+Speaking English is dead easy for me, but that doesn't mean that speaking English is intrinsically simple. I find French quite difficult. Little French children speak French all the time, [...] It's easy for them, it lies near to them.  
+<br>
+(taken from Jonathan M. Lange's [notes for “Simple made easy”](http://code.mumak.net/2012/02/simple-made-easy.html))
+
+Rails developers need to be particularly wary of mistaking easy things for simple. Rich warns that “Programmers know the benefits of everything and the tradeoffs of nothing.” ([“Simplicity matters”](https://raw.githubusercontent.com/richhickey/slides/master/simplicitymatters.pdf), slide 10).
+Running `gem install devise` is damn easy. But the code it installs is incredibly complex. The same applies to `rails new my_blog` - do you know what you ship?  
+Not meaning to start another [Γιγαντομαχία](http://en.wikipedia.org/wiki/Giants_%28Greek_mythology%29#Symbolism.2C_meaning_and_interpretations), but look at this:
+
+![Rails controller has more ancestors than Jesus](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/more_ancestors_than_jesus.jpg)
+
+**Programmer convenience** is not everything and putting it first can be dangerous.  
+Another thing is that you need a working Ruby environment to run the command above. Rails beginner events show time and again how tedious this can be - _easy for me_ -vs- _easy for you_.  
+
+Marvin Minsky gives another nice metaphor for the difficulty of telling simple and easy things apart:
+
+> “A computer is like a violin. You can imagine a novice trying first a phonograph and then a violin. The latter, he says, sounds terrible. That is the argument we have heard from our humanists and most of our computer scientists. Computer programs are good, they say, for particular purposes, but they aren't flexible. Neither is a violin, or a typewriter, until you learn how to use it.”  
+<br>
+Marvin Minsky, “Why Programming Is a Good Medium for Expressing Poorly-Understood and Sloppily-Formulated Ideas”, quoted after _Structure and Interpretation of Computer Programs_, [“Preface to the First Edition”](http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-7.html).
+
+Some things are inherently complex - your business processes, for example. The thing we should try to avoid or rein in as much as possible is **incidental complexity** and Rich argues that languages like Ruby suffer from it and thus bring along unnecessary complexity:
+
+> We can make the same exact software we are making today with dramatically simpler stuff. Really radically simpler languages, tools, techniques, approaches. Radically simpler than Ruby, which _seems_ really simple. Why aren't we?  
+<br>
+(Rich Hickey. 2012. “Simplicity matters”. Rails Conf. [http://youtu.be/rI8tNMsozo0?t=19m24s](http://youtu.be/rI8tNMsozo0?t=19m24s))
+
+He presents the following comparison of complex and simple tools:
+
+[![Complex -vs- simple](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/complex_vs_simple.png)](http://www.youtube.com/watch?v=rI8tNMsozo0&feature=youtu.be&t=21m41s)
+
+Watch [his talk](http://www.youtube.com/watch?v=rI8tNMsozo0) to learn more.  
+What took me by surprise was that variables made the list. What could possibly be complex about one of the fundamental building blocks of the languages I've used so far? The problem is that variables are places whose content can change any time. This is especially [excruciating](http://jaoo.dk/dl/jaoo-aarhus-2009/slides/RichHickey_TheClojureConcurrencyStory.pdf) in concurrent programming.  
+In Clojure, you use [`let`](http://clojure.github.io/clojure/clojure.core-api.html#clojure.core/let) bindings, which locally bind a value to a symbol within a scope they create. The value the symbol refers to cannot be changed - it's as if you built a language with constants instead of variables as the default. Mutable storage (variables) also exist but they are an explicit [exception](http://clojure.org/vars). To learn more about this check out [“The Value of Values”](http://www.infoq.com/presentations/Value-Values).
+
+Rich's talks on programming principles are brilliant and very inspiring. They're ripe with etymological derivations. Rich quips that all he needs to prepare his talks is a dictionary :) His concept analyses are deep and unique - reminiscent of [Heidegger](https://en.wikipedia.org/wiki/Martin_Heidegger)'s etymological arguments. One major reason I chose Clojure is to better follow Rich's _thinking_. If people like Rich were to leave Clojure in a couple of years, I'd be happy to follow them to other languages. He's one of the most inspiring _thinkers_ in applied programming I know.  
+
+### 2012 - Brief Contact with Clojure
+After I'd watched the keynote, I read the first few chapters of one or two Clojure books - there were already several to choose from, which always leaves you with the nagging question which one's best for you... (here are my [recommendations](#recommended_books) anyway). And despite the fascination with Rich's ideas, I soon put Clojure aside again. It was hard to find the concepts he was talking about materialise in the books I was reading. The books' authors aren't to blame, at least it's the same in many other programming languages: books presenting one language feature after the other. They are fine when you know you have to struggle through them for a course or your job, but when you mostly read them after work with high expectations, they can easily become disappointing.  
+On the one hand, I was looking for a more [“dessert-first”](http://www.braveclojure.com) approach to Clojure - give me something more exciting than trifle puzzles, something shiny I can still grasp as a beginner and that connects with Rich's talk. On the other, reading about Clojure was confusing when your background's another language and you cannot suppress asking yourself how certain features compare across languages.
+
+> “Anyone could learn LISP in one day, except that if they already knew Fortran, it would take three days.” — Marvin Minsky 
+
+[Brian Marick](https://twitter.com/marick)'s book [_Functional Programming for the Object-Oriented Programmer_](https://leanpub.com/fp-oo) was helpful and is recommended. Another great recommendation came from my friend [Max Weber](https://twitter.com/webermaximilian), who runs our [local Clojure User Group](http://www.meetup.com/clojure-cologne). He told me to get my head around Clojure's ideas first and that talks would probably help me to do that faster than books. Rich Hickey is the Socrates of Clojure - he teaches more by talking than writing :) I did both in parallel anyway, but watched more than I read :) When a new environment is alien and confusing, pressing on and immersing yourself even more into it is definitely the right thing to do.
+
+After I'd read and heard enough to about Clojure's foundations, I decided it was time to get my hands dirty and gather some practical experiences. However, I had no idea what to _build_ with Clojure, and hands-on tutorials I could relate to were scarce. [_Web Development with Clojure_](https://pragprog.com/book/dswdcloj/web-development-with-clojure) hadn't been written yet and the learning curve for setting up web apps and a development environment looked steep. [ClojureScript](http://clojure.org/clojurescript) - Clojure that runs in browsers - was still in its infancy.  
+Om, a "JavaScript MVC" (see <a href="#Provisio:_so-called_Javascript_MVC">provisio below</a>) written in ClojureScript, was a gate opener for my path into Clojure. I'm now reading many of the [books](#recommended_books) that seemed boring two years ago :)
+
+## Clojure and what's so fascinating about it
+The overarching design principle behind Clojure is a striving for simplicity. Here are Clojure's other core features:
+
+1. Clojure is a **LISP** dialect: it harnesses LISP's simple syntax for a powerful macro system.
+2. Clojure has **immutable persistent data structures**: immutable data structures "change your life". They make your code vastly easier to reason about and make Clojure an excellent choice for concurrent programming.
+3. Clojure is **dynamic**: there are no types, like in most traditional LISPs.
+4. Clojure is **impurely functional**: it's not object-oriented, embraces pure functions but allows you to get stuff done (pure functional languages like [Haskell](http://en.wikipedia.org/wiki/Haskell_%28programming_language%29) are very academic and rather ["useless"](https://www.youtube.com/watch?v=iSmkqocn0oQ))
+5. Clojure is a **hosted** language running on the **JVM**. There's also ClojureScript running on JavaScript engines and [ClojureCLR](https://github.com/clojure/clojure-clr) for Microsoft's [Common Language Runtime](http://en.wikipedia.org/wiki/Common_Language_Runtime).
+6. Clojure is **pragmatic**:
+   + runs on the JVM (hence runs existing platforms, can make use of the JVM's many optimizations and existing Java libraries)
+   + it's impurely functional
+   + has syntax and data type ([vectors](http://clojure.org/data_structures#Data%20Structures-Vectors%20%28IPersistentVector%29)) simplifications/extensions over traditional LISPs.
+
+Of these features, we'll take a closer look at LISP in the next section. In the second blog post, we'll discover why immutable persistent data structures make Om even faster than React and how they allow efficient undo functionality.
+
+### Clojure is a LISP
+> LISP is worth learning for a different reason — the profound enlightenment experience you will have when you finally get it. That experience will make you a better programmer for the rest of your days, even if you never actually use LISP itself a lot.  
+<br>
+[“How To Become A Hacker”](http://www.catb.org/~esr/faqs/hacker-howto.html), Eric S. Raymond
+
+LISP is the second-oldest programming language still in use. It's been around since 1958 and is far from dead. It used to be the preferred language for [AI programming](http://en.wikipedia.org/wiki/AI_winter). LISP is often wrongly portrayed as _one_ language while it's actually a very heterogeneous family of languages. Most LISPs are functional, but some are object-oriented; most are dynamic, but there are also typed ones etc.  
+It's usually part of LISPers' education to write their own LISP implementation and new variants keep cropping up. [Racket](http://racket-lang.org) is one of the most exciting recent ones and last week [Timothy Baldridge](https://twitter.com/timbaldridge) released the Clojure-inspired [Pixie](https://github.com/pixie-lang/pixie), written in Python.  
+There's no other language that has so many dialects. What connects them is their syntax.
+
+#### Homoiconicity: Code as Data, Data as Code
+Here's a trivial example of Clojure code:
+
+    (+ 7 (* 3 4))  
+    ;; => 19
+<br>
+And here's the same in Ruby:
+
+    3 * 4 + 7 
+<br>
+Obviously, Ruby's syntax is more familiar and _easier_ for us since it's the notation learned in countless math lessons. LISP uses so-called prefix notation, where function names always come before their parameters - even in calculations. The Ruby example uses infix notation.  
+The interesting thing here is that the Clojure code is structurally equivalent to the [abstract syntax tree](http://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST) that Ruby's interpreter has to construct from the Ruby code. Ruby's interpreter has to know about operator precedence to build the correct AST, whereas the Clojure compiler has the AST straight away and then only has to process nested parentheses. LISP's syntax is extremely simple - yet takes some small effort from the programmer to get used to (remember the violin quote above?).
+
+<br>
+!["Your father's parentheses - Elegant weapons for a more civilized age"](https://raw.githubusercontent.com/paulwittmann/railslove-website-images/master/omingard/lisp_cycles.png)  
+(source: [https://xkcd.com/297](https://xkcd.com/297))
+<br>
+<br>
+
+Here's a function call in Clojure:
+
+    (my_function "Hey!")
+<br>
+And the same in Ruby:
+
+    my_function("Hey!")
+<br>
+The only difference here really is that in Clojure, the parentheses have moved outside, wrapping the function's name and the parameters, whereas in Ruby they only wrap the parameters. If you look back at our maths example, you can now see that `(+ 1 1)` has the same structure as `(my_function "Hey!")`, whereas in Ruby, some functions use prefix notation (`my_function("Hey!")`) while others use infix notation (`1 + 1`). The Ruby interpreter has to know about a lot more special cases and is hence more complex than a LISP interpreter.
+
+But there is more. So far we've only seen that Clojure's syntax is more uniform than Ruby - no operator precedence, no mix of infix and prefix notation, no need to build an AST. Another thing about Clojure code is that it consists purely of Clojure data structures. Everything in parentheses is a Clojure [list](http://clojure.org/data_structures#Data%20Structures-Lists%20%28IPersistentList%29).
+
+    (+ 1 2)
+<br>
+is actually a list with the members: `+`, `1`, and `2`. The first list entry is always the operator - a function which gets called - and the rest are its operands. Clojure code consists purely of Clojure data structures. Since its code is isomorphic with (has the same structure as) the AST, it is a [homoiconic](http://en.wikipedia.org/wiki/Homoiconicity) language. This is also known as "code as data" (and vice versa). Ruby, C, JavaScript, Python, Java, Haskell and most other non-LISP programming languages are _not_ homoiconic.  
+In a homoiconic language, metaprogramming is much easier. When your code is data, you can manipulate it just like any other data - you can call functions like `map` etc. _to manipulate your code_. Clojure has a very powerful macro system, which gives its users super powers. In many languages, if you wanted to have `unless` you'd have to wait for the language maintainers to update the compiler. In Clojure, you just write a macro. In [“Beating the Averages”](http://www.paulgraham.com/avg.html) Paul Graham called LISP his “secret weapon”. It's recently been argued that if LISP were a weapon, it'd be a [shiv](http://bjorn.tipling.com/if-programming-languages-were-weapons) ;)
+
+> “Lisp is a programmable programming language.”
+<br>
+— John Foderaro
+
+If code is data, why do we still store it in text files then? Chris Granger takes the idea of code as data to its logical conclusion in [“Programming inside a Database. Thoughtbot Podcast”](http://podcasts.thoughtbot.com/giantrobots/111).
+
+#### Clojure's syntax is alien
+My impression is that programmers most easily dismiss Clojure because of its syntax. Programmer-convenience-first thinking (“it has to be easy to use or we won't use it!”) and an unfamiliar, hard-to-read syntax don't go very well together. But this is really just judging Clojure by its cover.  
+When you're used to Ruby's clean syntax, Clojure may look like a step backwards. I thought the same initially, but then learned _why_ Clojure chose LISP syntax - simplicity and macros. I have to say that, first of all, you'll get used to the brackets and prefix notation, and secondly it's become questionable to me whether Ruby's clean syntax is worth what you're losing in terms of reasoning about your language and metaprogramming elegance.
+
+### Other Misgivings
+Hardcore LISPers have misgivings about Clojure because it runs on the Java Virtual Machine (JVM). Stanislav Datskovskiy wrote two posts in this vein: [“Thumbs Down for Clojure”](http://www.loper-os.org/?p=42) and [“Of Weighty Matters, or Thumbs Still Down for Clojure”](http://www.loper-os.org/?p=42 and http://www.loper-os.org/?p=374), and asserts that Clojure is “A Lisp which barfs Java stack traces”. Implementing a dynamic LISP on the JVM is no small feat and the Clojure community's [aware of it](http://vimeo.com/100518965). Better stack traces still rank high on the community's [whish list](http://www.bytopia.org/2014/10/27/state-of-clojure-2014).  
+Granted, Clojure's implementation is complex, but so is Ruby's. Usually I don't have to deal with my language's implementation details and Clojure's success in large projects like [Room Key](http://cognitect.com/consulting/case-studies/roomkey) or [Daily Mail](http://www.pitheringabout.com/?p=1018) show that we can greatly benefit from the many simplifications it brings.  
+What Stanislav and many other LISPers are yearning for is a comeback of [LISP machines](http://en.wikipedia.org/wiki/Lisp_machine). If we wanted a cleaner Clojure implementation we should start with cleaner hardware, then write a cleaner replacement for the JVM (same cross-platform capabilities!?, same performance optimisations!?), as well as all its libraries... we'd be busy at least for another decade and required backing from several large companies. Clojure's implementation may not be ideal, but we can use it today and it gives software engineers a much cleaner and simpler language to work with.  
+Stanislav's criticism is legitimate, but he's holding Clojure to a very high, idealist standard - something you usually don't have the luxury to do in applied programming. Otherwise, what's keeping us all from doing more Haskell?
+
+#### Clojure is not Object-Oriented
+Many who aren't scared off by Clojure's syntax leave the room when they hear that it isn't object-oriented and they can no longer model things with objects. Aren't objects the best way to model the world!? George Lakoff [wouldn't agree](http://en.wikipedia.org/wiki/Women,_Fire,_and_Dangerous_Things).  
+The problem with OOP is that objects are encapsulated data bundled together with methods that manipulate that data. Encapsulation is bad in two regards. Firstly, sharing methods between objects becomes unnecessarily tedious. And secondly objects' hidden state (instance variables in Ruby) make reasoning about your code extremely complex. Calling `my_object.some_method(5)` can return different results when `some_method` depends on the object's mutable internal state. In functional programming, functions always return the same result for the same input - they're [referentially transparent](http://en.wikipedia.org/wiki/Referential_transparency_%28computer_science%29). In OOP we usually also write referentially opaque methods, which means you cannot replace all method calls with the same argument with the value the function returns when it's first being called without changing the program's behaviour.
+
+!["Rich Hickey on state"](http://paulwittmann.github.io/alien-technology-9elements/images/hickey_state.jpg)  
+Rich Hickey, Emperor of State
+
+While OOP will certainly remain the dominant way of doing programming for the near future, there's an increasing interest in functional programming and Clojure in particular:
+
+<blockquote class="twitter-tweet" lang="en"><p>Ok, I&#39;ve decided it&#39;s finally time to learn Clojure. Too many smart people I know are using it. Suggestions for a good place to start?</p>&mdash; Patrick Dubroy (@dubroy) <a href="https://twitter.com/dubroy/status/391172425150263296">October 18, 2013</a>
+<br><br>
+<p>I should go to clojure conferences even if I don&#39;t use Clojure. I see too many smart people going. <a href="https://twitter.com/hashtag/ClojureWest?src=hash">#ClojureWest</a></p>&mdash; James “Jimmy” Long (@jlongster) <a href="https://twitter.com/jlongster/status/313665572976095232">March 18, 2013</a></blockquote>
+
+[Lawrence Krubner](https://twitter.com/krubner)'s article [“Object Oriented Programming is an expensive disaster which must end”](http://www.smashcompany.com/technology/object-oriented-programming-is-an-expensive-disaster-which-must-end) is a good source to learn about the shortcomings of OOP. The great thing about the Clojure community is that they're not on a crusade against OOP and know that FP isn't a silver bullet either. They happily import OOP's best features into Clojure where it makes sense: Clojure's [multimethods](http://clojure.org/multimethods) are polymorphism ported to functional programming and [Stuart Sierra](https://twitter.com/stuartsierra)'s [Component](https://github.com/stuartsierra/component) framework uses stateful objects in Clojure. Even more on Clojure's OOP influences here: [“Functional OOP, Clojure style”](http://www.slideshare.net/yoavrubin/oop-clojure-style-long).
+
+## Enter Om
+My interest in LISP and Clojure lay dormant for a while until an episode of the German podcast [Geekstammtisch](http://geekstammtisch.de) with [Moritz Heidkamp](https://twitter.com/dergutemoritz) appeared in October 2013: [“Vom Tellerwäscher zum LISP-Entwickler”](http://geekstammtisch.de/#GST025) (“From dishwasher to LISP developer”). It is an exciting round trip through various [LISPs](https://en.wikipedia.org/wiki/Lisp_%28programming_language%29) and the ideas behind them, introduces [Chicken Scheme](http://www.call-cc.org), and reports from [2013's EuroClojure](http://euroclojure.com/2013). My curiosity in Clojure and functional programming was reawakened - but the podcast only made Clojure's alternatives more appealing and I still didn't know how to get started building something meaningful. Luckily, this was to change shortly thereafter.
+
+Two months later, [David Nolen](http://twitter.com/swannodette), primary maintainer of ClojureScript, made some headlines when he presented [Om](https://github.com/swannodette/om) in his blog post: [“The Future of JavaScript MVC Frameworks”](https://swannodette.github.io/2013/12/17/the-future-of-javascript-mvcs) (December 2013).  
+Om - David pronounces it [[oʊm]](http://media.merriam-webster.com/soundc11/o/om000001.wav) - is a ClojureScript library that acts as an interface to Facebook's [React](https://facebook.github.io/react). On a very simple level, you can think of Om as kind of a nicer [Backbone.js](http://backbonejs.org) for which you write code in this new language called ClojureScript which compiles to JavaScript.  
+Since ClojureScript is Clojure running on JavaScript engines - the two relate very much _unlike_ JavaScript relates to Java -, Om promised an easy path to get started with Clojure by building stuff in a browser - known territory! This was the opportunity I'd been waiting for - I had to try this out!
+
+## Conclusion - Part 2 is coming soon!
+We've reached the end of part 1. Very glad you made it to the end :) I hope you've enjoyed the trip so far. We met Clojure, a dynamic LISP dialect that runs on the JVM. We found its syntax the most confusing at first. But with Rich Hickey distinction between simplicity and easiness in mind we saw that LISP syntax is actually strikingly simple and elegant and drives Clojure's powerful macro system.  
+In the next part, we'll see how immutable persistent data structures make Clojure easier to reason about and we'll explore how they power Om's features distinguishing it from React. Om is a ClojureScript library built on top of React that is even faster than React itself and has an efficient undo feature - all thanks to immutable persistent data structures.  
+Stay tuned, best follow me on Twitter to hear when **PART 2: “Building a Card Game with Om”** gets published: [@wakkahari](https://twitter.com/wakkahari).  
+
+<a name="video-demo" class="video-demo-label">Omingard video demo:</a>  
+<iframe class="omingard-demo" width="560" height="315" src="//www.youtube-nocookie.com/embed/0zV8mztzCuE?rel=0" frameborder="0" allowfullscreen></iframe>
+
+<div class='cf'>
+  <a href="https://omingard.5apps.com" style='float: left; margin-right: 20px'>
+    <button class="play-button">&#9654; Play Omingard</button>
+  </a>
+
+  <a href="https://github.com/paulwittmann/omingard">
+    <button style='background-color: gray'>&#955; Source Code</button>
+  </a>
+</div>
+
+Feeling impatient? Then check out the slides of my talks on Om:
+
++ ["Alien Technology: Ideas from the Clojureverse - A Breakneck Journey through Functional Programming, LISP, Clojure(Script), Om, and React"](http://paulwittmann.github.io/railscamp-2014-alien-technology): follows the same basic outline of these two blog posts. Held at Railscamp Germany 2014.
++ [React & Om](http://paulwittmann.github.io/cgnjs-om): is more focussed on React. Held at Cologne.js.
+
+<div class="omomom">ॐ &nbsp;&nbsp;&nbsp; ॐ &nbsp;&nbsp;&nbsp; ॐ</div>
+
+### Feedback
+Send me a message on [Twitter](https://twitter.com/wakkahari) or an email (<paul@railslove.com>). Can't wait to hear what you think and learn about your own adventures in the Clojureverse!
+
+**Update**  
+Thank you for the great feedback so far! Amazed this post even reached Cognitect CEO Justin Gehtland:
+
+<blockquote class="twitter-tweet" lang="en"><p>I&#39;m quite enjoying reading Paul&#39;s take on his Clojure journey: <a href="http://t.co/riZZNGBP5l">http://t.co/riZZNGBP5l</a></p>&mdash; jgehtland (@jgehtland) <a href="https://twitter.com/jgehtland/status/533308333474582528">November 14, 2014</a></blockquote>
+
+_Clarification on Haskell_  
+<blockquote class="twitter-tweet" data-conversation="none" lang="en"><p>Nice, except the Haskell part RT <a href="https://twitter.com/ClojureFact">@ClojureFact</a>: My Way into <a href="https://twitter.com/hashtag/Clojure?src=hash">#Clojure</a>: Building a Card Game with Om <a href="http://t.co/mhbndIfhr2">http://t.co/mhbndIfhr2</a></p>&mdash; Mario Pastorelli (@mapastr) <a href="https://twitter.com/mapastr/status/533947779295764480">November 16, 2014</a></blockquote>
+
+The bits where I'm picking on Haskell above are tongue-in-cheek. I called it "useless" and linked the word to a [video](https://www.youtube.com/watch?v=iSmkqocn0oQ) where Simon Peyton Jones, one of Haskell's core contributors, himself puts Haskell into the "safe but useless" corner of a diagram. The interesting thing is that he's trying to reach safe and useful heaven from Haskell, whereas languages like Ruby etc. are coming from the "useful but unsafe" corner where C presides and try to make it safer.  
+As would have become clear in part 2's "The Road ahead" section, Haskell is on my list of things to learn next. Even if it may be useless - jokes aside, chances are most of us won't be writing a lot of Haskell for their professional work -, there's a lot to learn from Haskell. Maybe I'll write "My Way into Haskell" in a year or two.
+
+<div class="omomom">ॐ &nbsp;&nbsp;&nbsp; ॐ &nbsp;&nbsp;&nbsp; ॐ</div>
+
+### Want to hire us?
+We're a team of Ruby and JavaScript developers from Cologne, Germany with experiences in fintech, UX consulting, software architecturing, and kickstarting startups.
+Please contact: <michael@railslove.com>
+
+<div class="omomom">ॐ &nbsp;&nbsp;&nbsp; ॐ &nbsp;&nbsp;&nbsp; ॐ</div>
+
+### Thank you
++ [David Nolen](https://twitter.com/swannodette): for Om and the excellent [Om tutorials](https://github.com/swannodette/om/wiki), without which I'd never have been able to write Omingard.
++ [Max Weber](https://twitter.com/webermaximilian), [Moritz Ulrich](https://twitter.com/the_kenny), and [Moritz Heidkamp](http://twitter.com/dergutemoritz) for their (late night) support, proofreading, patience, and inspiring excitement for Clojure, functional programming, and simplicity.
++ [Sebastian Cohnen](https://twitter.com/tisba) and [Dirk Breuer](https://twitter.com/railsbros_dirk) of [Geekstammtisch](http://geekstammtisch.de) for inviting [Moritz](https://twitter.com/dergutemoritz) and for their excellent podcasts.
++ Our good friends from [9elements](http://9elements.com) who invited me to give a talk on ClojureScript, React and Om and provided very valuable feedback! [German Slides](https://github.com/paulwittmann/alien-technology-9elements) based on these [English slides](http://paulwittmann.github.io/railscamp-2014-alien-technology) from Railscamp Germany.
++ Title photograph courtesy of my lovely sister.
+
+<div class="omomom">ॐ &nbsp;&nbsp;&nbsp; ॐ &nbsp;&nbsp;&nbsp; ॐ</div>
+
+## Appendix
+
+#### Provisio: so-called Javascript MVC
+“The JavaScript MVC field” is a problematic term and refers to a hard to define field. Not all of its players follow MVC, or at least have very different ideas of MVC. Many speak of “JavaScript MV\*” instead. Angular seems to have given up the categorisation fight and just calls itself “MVW” - “Model, View, Whatever”. For lack of a better name for modern client-side JavaScript libraries (or frameworks) for building user interfaces, I'll just stick with the customary “JavaScript MVC”, or “JS-MVC” for short.  
+I'm calling Om a JS-MVC only to put it into perspective for readers unfamiliar with the intricacies of the JS-MVC field. Om does _not_ follow the MVC pattern.  
+React stands out even from our lax definition, since all it offers is the “V” in MVC. However, the concepts it introduced to just this third of MVC are so interesting and simplify view rendering so vastly, that it is making large waves. It's become popular to replace the view layer in other JS-MVC frameworks with React ([Angular with React](http://www.williambrownstreet.net/blog/2014/04/faster-angularjs-rendering-angularjs-and-reactjs), [Backbone with React](https://github.com/tastejs/todomvc/tree/gh-pages/labs/architecture-examples/react-backbone)) and Ember is [planning to port](https://docs.google.com/presentation/d/1afMLTCpRxhJpurQ97VBHCZkLbR1TEsRnd3yyxuSQ5YY/preview#slide=id.g380053cce_1786) some of React's ideas. For the purposes of building Omingard, React was more than enough - even though it's not a full-blown MVC framework.
+
+<div class="omomom">ॐ &nbsp;&nbsp;&nbsp; ॐ &nbsp;&nbsp;&nbsp; ॐ</div>
+
+## Links & Further Reading
+
+<a name="recommended_books"><b>Recommended Books</b></a><br>
+
++ First Clojure book: I used [_Clojure Programming_](http://www.clojurebook.com) - I'm a big fan of printed books. [_Clojure for the Brave and True_](http://www.braveclojure.com) also looks very good and can be read free online.
++ Second Clojure book: [_The Joy of Clojure_](http://www.joyofclojure.com), 2<sup>nd</sup> edition
++ The best programming book ever - an old MIT course book which uses [Scheme](http://en.wikipedia.org/wiki/Scheme_%28programming_language%29), one of the most popular LISPs: [_Structure and Interpretation of Computer Programs_](https://mitpress.mit.edu/sicp/full-text/book/book.html) - [PDF](https://github.com/sarabander/sicp-pdf) - [video lectures from 1986](https://www.youtube.com/watch?v=2Op3QLzMgSY&list=PLE18841CABEA24090)
++ [_Functional Programming for the Object-Oriented Programmer_](https://leanpub.com/fp-oo) by Brian Marick
+
+**Clojure Eco System**  
+
++ [Clojure Gazette](http://www.clojuregazette.com) by [Eric Normand](https://twitter.com/ericnormand)
++ [Cognicast](http://blog.cognitect.com/cognicast)
++ [4clojure](http://www.4clojure.com) - Learn Clojure by solving interesting problems.
