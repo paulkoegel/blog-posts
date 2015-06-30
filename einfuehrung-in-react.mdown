@@ -83,7 +83,7 @@ Wie kommt es, dass wir mitten in der `render`-Funktion auf einmal HTML schreiben
 
 [Interaktive Demo bei JSBin](http://jsbin.com/qezomi/edit?html,js,console,output)
 
-Dieser Code dient nur zur Illustration und wir können `React.DOM` zugunsten von JSX direkt wieder vergessen. JSX hat sich in der React-Szene durchgesetzt, um einfacher Markup schreiben zu können. Wir werden nachfolgend und in allen anderen Artikeln auf reacJS.de JSX verwenden. Wichtig ist im Hinterkopf zu behalten, dass es im unter der Haube zu reinem JavaScript umgewandelt wird. Das ist z.B. der Grund, warum man in JSX nicht sowas schreiben kann:
+Dieser Code dient nur zur Illustration und wir können `React.DOM` zugunsten von JSX direkt wieder vergessen. JSX hat sich in der React-Szene durchgesetzt, um einfacher Markup schreiben zu können. Wir werden nachfolgend und in allen anderen Artikeln auf reactJS.de JSX verwenden. Wichtig ist im Hinterkopf zu behalten, dass es im unter der Haube zu reinem JavaScript umgewandelt wird. Das ist z.B. der Grund, warum man in JSX nicht sowas schreiben kann:
 
     render: function() {
       return(
