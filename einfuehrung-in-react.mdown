@@ -33,5 +33,16 @@ synthetische Events, um jQuery-artig Browserunterschiede wegzuabstrahieren
 
 ## Komponentenarchitektur
 
+## Beispiele
+
+zähl-button:
+http://jsbin.com/qatoziziku/1/edit?html,js,output
+
+zähl-button mit state:
+http://jsbin.com/tuzuxufiwu/1/edit?html,js,output
+
+toggler:
+http://jsbin.com/tuliginexu/edit?html,css,js,output
+
 ### Links
 + ["Legal"-Datei zur Lizenz](https://code.facebook.com/posts/1639473982937255/updating-our-open-source-patent-grant)
