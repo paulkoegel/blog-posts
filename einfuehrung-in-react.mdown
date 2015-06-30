@@ -1,7 +1,6 @@
 <style>
   .teaser {
     background-position: center 55%; // 37%
-    // background-image: url(https://farm7.staticflickr.com/6040/5911511885_3a3598f928_o.jpg) !important;
     background-image: url(https://farm1.staticflickr.com/398/18425297304_fe8f93b6bf_o.jpg) !important;
   }
   .teaser h1 {
@@ -31,39 +30,117 @@ Höchste Zeit, dass wir uns React näher anschauen!
 ### Motivation hinter React
 Facebooks Motivation hinter React war es, seinen Frontend-Code leichter verstehbar und besser wartbar zu machen. Vor React dauerte es lange, um sich das Verhalten von bestehendem Code zu vergegenwärtigen. Es gab Teile des Codes, die so komplex waren, dass niemand außer ein bestimmter Mitarbeiter sie anfassen wollte. Bugs wie unsynchronisierte Zähler ungelesener Nachrichten traten immer wieder auf. Allgemein gilt, dass je stärker gewachsener Code miteinander verwoben ist, desto schwieriger wird er zu warten.
 
-Das Ziel von React ist es, _einfacheren_ Code schreiben zu können, dessen Bestandteile weniger miteinander verschränkt oder verwoben sind (der Wortursprung von [komplex](https://de.wiktionary.org/wiki/komplex)). Um das zu erreichen, war es nötig, nicht immer dem _leichtesten_ und vertrautesten Weg zu folgen (vgl. ["Simplicity Matters"](https://www.youtube.com/watch?v=rI8tNMsozo0) &ndash; [Rich Hickey](https://twitter.com/richhickey), vor allem die Unterscheidung zwischen _einfach_ (simple) und _leicht_ (easy)).
+Das Ziel von React ist es, _einfacheren_ Code schreiben zu können, dessen Bestandteile weniger miteinander verschränkt oder verwoben sind (der Wortursprung von [komplex](https://de.wiktionary.org/wiki/komplex)). Um das zu erreichen, war es nötig, nicht immer dem _leichtesten_ und vertrautesten Weg zu folgen (vgl. ["Simplicity Matters"](https://www.youtube.com/watch?v=rI8tNMsozo0) &ndash; [Rich Hickey](https://twitter.com/richhickey); vor allem zur Unterscheidung zwischen _einfach_ (simple) und _leicht_ (easy)).
 
 ### Eine Bibliothek, kein Framework
-React tritt als Bewerber im sogenannten [Javascript MV\*-Feld](http://todomvc.com) an, folgt jedoch weder der populärsten Ausprägung MVC, noch bedient es viel mehr als das "V" in MV\*.
+React tritt als Bewerber im sogenannten [Javascript MV\*-Feld](http://todomvc.com) an, folgt jedoch weder der populärsten Ausprägung MVC, noch besteht es aus viel mehr als dem was dem "V", also der View, in MV\* entspräche.
 
-React ist als Bibliothek konzipiert und möchte kein mächtiges Framework sein. So kann es ein höchstflexibles Werkzeug sein, das es erlaubt Anwendungen in der Sprache ihrer eigenen Problemdomäne &ndash; und nicht der Sprache eines Frameworks &ndash; zu modellieren.
+React ist als Bibliothek konzipiert und möchte kein mächtiges Framework sein. So bleibt es ein flexibles Werkzeug sein, das es erlaubt Anwendungen in der Sprache ihrer eigenen Problemdomäne &ndash; und nicht der Sprache eines Frameworks &ndash; zu modellieren.
 
-Da React einem nicht die Grundstruktur seiner Anwendung vorschreibt (vgl. ["Architecture the Lost Years"](https://www.youtube.com/watch?v=WpkDN78P884) &ndash; [Robert Martin](https://twitter.com/unclebobmartin)), schränkt es einen weniger ein und lässt sich hervorragend in bestehende Codebasen integrieren, ohne dass ich dort alles Umstricken müsste.
+Da React einem nicht die Grundstruktur seiner Anwendung vorschreibt (vgl. ["Architecture the Lost Years"](https://www.youtube.com/watch?v=WpkDN78P884) &ndash; [Robert Martin](https://twitter.com/unclebobmartin)), schränkt es einen weniger ein und lässt sich hervorragend in bestehende Codebasen integrieren, ohne dass dort alles umgestrickt werden müsste.
 
 ### Reacts Bauteile
-Im wesentlichen besteht React aus folgenden Bestandteilen:
+Im wesentlichen hat React folgende Bestandteile:
 
-+ Virtueller DOM
-+ Komponentenarchitektur
-+ Browserkompatibilität:  
+1. Komponentenarchitektur
+2. Virtueller DOM
+3. Browserkompatibilität:  
 synthetische Events, um jQuery-artig Browserunterschiede wegzuabstrahieren
 
-### Komponentenarchitektur
-
-## Virtueller DOM
+Auf die ersten beiden Punkte möchte ich nun genauer eingehen. Der dritte Punkt sei an dieser Stelle nur der Vollständigkeit halber erwähnt und muss uns für diese Einführung nicht weiter interessieren.
 
 ## Komponentenarchitektur
+Reacts zentraler und einziger Baustein sind Komponenten. React-Komponenten sind _ähnlich_ wie Web Components oder Angular Directives.  
+
+### 1. Schritt - Ein simple Komponente
+Unsere erste Komponente macht nicht viel mehr als einen Klick auf einen Button abzufangen:
+
+    var ButtonCounter = React.createClass({
+      add: function() {
+        console.log('add 1!');
+      },
+
+      render: function() {
+        return(
+          <div>
+            <h1>Counter</h1>
+            <button onClick={this.add}>+</button>
+          </div>
+        );
+      }
+    });
+
+[Interaktive Demo bei JSBin](http://jsbin.com/qeqigu/1/edit?html,js,output,console)
+
+Komponenten werden mit `React.createClass` erzeugt. Die wichtigeste Funktion einer Komponente ist `render`, wo das Markup für die DOM-Repräsentation der Komponente definiert wird. Die `add`-Funktion im Beispiel ist eine von uns ausgedachte, die gerade nicht viel mehr macht als Klickevents in die JavaScript Konsole des Browsers zu schreiben. Zu bemerken ist noch, dass React den ganz normalen onClick-Handler des Browsers verwendet, der als Attribut auf dem  `<button>` gesetzt wird, statt beispielsweise durch CSS-Selektoren. Durch geschweifte Klammern (`{}`) können in JSX JavaScript-Ausdrücke eingebettet werden.
+
+### JSX
+Wie kommt es, dass wir mitten in der `render`-Funktion auf einmal HTML schreiben können? React verwendet dazu JSX, eine schlanke Syntaxerweiterung für JavaScript, mit der es leichter ist Markup zu schreiben. JSX macht nichts weiter als die spitzen Klammern oben in folgende JavaScript-Funktionsaufrufe umzuwandeln:
+
+    React.DOM.div({},
+      React.DOM.h1({}, "Counter"),
+      React.DOM.button({onClick: this.add}, "+"));
+
+[Interaktive Demo bei JSBin](http://jsbin.com/qezomi/edit?html,js,console,output)
+
+Dieser Code dient nur zur Illustration und wir können `React.DOM` zugunsten von JSX direkt wieder vergessen. JSX hat sich in der React-Szene durchgesetzt, um einfacher Markup schreiben zu können. Wir werden nachfolgend und in allen anderen Artikeln auf reacJS.de JSX verwenden. Wichtig ist im Hinterkopf zu behalten, dass es im unter der Haube zu reinem JavaScript umgewandelt wird. Das ist z.B. der Grund, warum man in JSX nicht sowas schreiben kann:
+
+    render: function() {
+      return(
+        <h1>Hallo</h1>
+        <h2>Wie geht es dir?</h2>
+      );
+
+Das resultierende Javascript würde versuchen aus `render` den Rückgabewert von zwei verschiedenen `React.DOM`-Aufrufen zurückzugeben. Da JavaScript-Funktionen aber nur einen Wert zurückgeben können, muss man in JSX immer noch ein umschließendes Element &ndash; oben ein `<div>` &ndash; hinzufügen.
+
+#### Bewertung
+> "If you're going to hate on React for some reason, make it something other than JSX"
+
+Alex Matchneer (@machty), Mitglied des Ember.js Core Teams. [Quelle](https://docs.google.com/presentation/d/1afMLTCpRxhJpurQ97VBHCZkLbR1TEsRnd3yyxuSQ5YY/preview?usp=sharing&sle=true#slide=id.g380053cce\_1205).
+
+JSX war mit dem Erscheinen von React für viele der erste Stein des Anstoßes. Warum keine schlankere Templating-Sprache wie HAML? Warum inline Eventhandler setzen? Und vor allem, warum bitte sollen wir auf einmal unser Markup in einer JavaScript-Datei schreiben, wo wir uns doch jahrelang die Trennung von HTML, CSS und JavaScript eingebläut haben?  
+
+Die Macher von React halten die Aufteilung nach Technologien (HTML, CSS, JavaScript) für kein gutes Kriterium für eine sinnvolle _separation of concerns_. Sie argumentieren stattdessen, dass wir zur Trennung der Aspekte unseres Frontend-Codes besser Komponenten als Grundlage benutzen sollten. Daher ist es nur konsequent, wenn man alles was zu einer Komponente gehört auch in eine Datei schreibt (mehr: ["React: Rethinking best practices"](https://www.youtube.com/watch?v=x7cQ3mrcKaY) &ndash; [Pete Hunt](https://twitter.com/floydophone), JSConf EU 2013).  
+Die Bestrebungen gehen hier sogar so weit, dass man jetzt schon optional CSS direkt in der Komponente schreiben kann, das dann per Inline-Styles (!) eingebunden wird (vgl. ["React: CSS in your JS"](https://vimeo.com/116209150") &ndash; [Christopher Chedeau](https://twitter.com/vjeux). Unterstützung für einige Features wie `:before`- und `:after`-Elemente sind gerade noch in Entwicklung.
+
+Ein weiterer Vorteil dieses Ansatzes ist es, dass React-Programmierer keine neue Templating-Sprache wie Handlebars lernen müssen. JSX ist wie angemerkt nur eine sehr dünne syntaktische Abtraktion über normale JavaScript Funktionsaufrufe.  
+Statt _logicless templates_, die einem hin und wieder unnötig Steine in den Weg legen, wählt React genau den umgekehrten Ansatz und lässt uns zum Bauen unserer Templates die ganze Mächtigkeit von JavaScript nutzen. Wenn man möchte gilt das gleiche auch für CSS, wo man dann keine Präprozessorsprache wie SCSS mehr benötigt.
+
+### 2. Schritt: eine simple Komponente mit State
+Es wird Zeit, dass unser `<button>` etwas sinnvolleres macht:
+
+    var ButtonCounter = React.createClass({
+      getInitialState: function() {
+        return({count: 0});
+      },
+
+      add: function() {
+        this.setState({count: this.state.count + 1});
+      },
+
+      render: function() {
+        return(
+          <div>
+            <h1>Counter</h1>
+            <button onClick={this.add}>+</button>
+          </div>
+        );
+      }
+    });
+
+[Interaktive Demo bei JSBin](http://jsbin.com/vimisa/edit?html,js,output)
+
+## Virtueller DOM
 
 ## Beispiele
 
 zähl-button:
-http://jsbin.com/qatoziziku/1/edit?html,js,output
+http://jsbin.com/qeqigu/1/edit?html,js,output
 
 zähl-button mit state:
-http://jsbin.com/tuzuxufiwu/1/edit?html,js,output
 
 toggler:
-http://jsbin.com/tuliginexu/edit?html,css,js,output
+http://jsbin.com/fevema/1/edit?html,js,output
 
 ## Fazit
 
@@ -80,5 +157,3 @@ http://jsbin.com/tuliginexu/edit?html,css,js,output
 
 ### Bildquellen
 Titelfoto: "The Rolling Stones". Riksarkivet (National Archives of Norway). Flickr Commons. [https://www.flickr.com/photos/national\_archives\_of\_norway/18425297304](https://www.flickr.com/photos/national_archives_of_norway/18425297304).
-
-(Titelfoto: "Båttur - boat trip" - Riksarkivet (National Archives of Norway). Flickr Commons. [https://www.flickr.com/photos/national\_archives\_of\_norway/5911511885/in/photolist-a1o3wH-4S5xuZ-ottpUM-cX64W5-dS6Sag-dWkhBz-7FWLdA-6GXWyP-dT8MFR-6BcTtm-4ibe2u-4ibz5j-4jyAhF-8zNQoo-6BanPQ-jLXw4p-6B8Jpp-6B6fKZ-cyDYJA-6B69Qv-6B8LoF-6BcTmS-6BcSLj-6BajVC-6DHJbf-8m4xkr-6BcREL-8m4nSp-6F6FLG-8m7Pko-6DDChR-6F6EW1-8m7GdE-hnbEqB-6DHJx7-6z3FVL-6DDynP-6F2sZR-8trfuC-8trbYm-eWxkzH-8raxZg-6F2syk-6Badb3-cyDYpo-6PqCUT-6B8JK8-6F6GmE-6yYz9X-6BcRzb](https://www.flickr.com/photos/national_archives_of_norway/5911511885/in/photolist-a1o3wH-4S5xuZ-ottpUM-cX64W5-dS6Sag-dWkhBz-7FWLdA-6GXWyP-dT8MFR-6BcTtm-4ibe2u-4ibz5j-4jyAhF-8zNQoo-6BanPQ-jLXw4p-6B8Jpp-6B6fKZ-cyDYJA-6B69Qv-6B8LoF-6BcTmS-6BcSLj-6BajVC-6DHJbf-8m4xkr-6BcREL-8m4nSp-6F6FLG-8m7Pko-6DDChR-6F6EW1-8m7GdE-hnbEqB-6DHJx7-6z3FVL-6DDynP-6F2sZR-8trfuC-8trbYm-eWxkzH-8raxZg-6F2syk-6Badb3-cyDYpo-6PqCUT-6B8JK8-6F6GmE-6yYz9X-6BcRzb).)
