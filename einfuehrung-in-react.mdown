@@ -3,23 +3,32 @@ Einführung in React
 
 ## Was ist React?
 React ist eine JavaScript-Bibliothek zum Erstellen von Benutzeroberflächen. Sie wurde 2013 von Facebook unter [BSD-Lizenz](https://de.wikipedia.org/wiki/BSD-Lizenz) veröffentlicht und schlägt seitdem immer größere Wellen und beeinflusst nachhaltig die gesamte JavaScript-Frontendlandschaft.
-React wird verwendet von Facebook, Instagram, Whatsapp, Yahoo, AirBnB, der Khan Academy, dem Atom editor, HipChat, der BBC und [vielen anderen mehr](https://github.com/facebook/react/wiki/Sites-Using-React).
-React machte schnell vor allem wegen seines virtuellen DOMs und der hervorragenden Rendering-Performanz von sich reden. Heute ist es in aller Munde und Ideen aus React haben ihren Weg in [Ember](https://www.isemberfastyet.com) und viele [andere Bibliotheken](https://github.com/staltz/cycle) gefunden.
-Auf den ersten Blick störte viele Reacts Andersartigkeit. Mit der Zeit begreifen wir jedoch immer klarer, welche Vorteile die neuen Wege mit sich bringen, die React uns beschreiten lässt. Das Netz wimmelt vor begeisterten Erfahrungsberichten und immer mehr React-Anwendungen sprießen aus dem Boden.
-Höchste Zeit, dass wir uns React näher anschauen!
+Sie wird verwendet von Facebook, Instagram, Whatsapp, Yahoo, AirBnB, dem Atom-Editor und [vielen anderen mehr](https://github.com/facebook/react/wiki/Sites-Using-React).
+
+React machte schnell vor allem wegen seines virtuellen DOMs und der hervorragenden Rendering-Performanz von sich reden. Daneben bietet es eine modulare Komponentenarchitektur, die als Basis für modularen und leicht nachzuvollziehenden Frontendcode dient.
+
+Diese Neuerungen bringen auch Nichtvertrautes mit sich. Der Einstieg in React gelingt am besten, wenn man bereit ist, sich auf unkonventionelle Ideen einzulassen und alte Überzeugungen abzulegen.
+Wir begreifen immer klarer, welche Vorteile die neuen Wege mit sich bringen, die React uns beschreiten lässt. Das Netz wimmelt vor begeisterten Erfahrungsberichten und Bibliotheken, die auf React aufbauen und immer mehr React-Anwendungen sprießen aus dem Boden.
+
+Höchste Zeit, dass wir uns React näher anschauen! Wir beginnen mit der Motivation hinter React, bevor wir uns die beiden wichtigsten Ideen hinter React &ndash; den virtuellen DOM und die Komponentenarchitektur &ndash; anschauen. Es folgen Codebeispiele und schließlich werden wir im Fazit Vor- und Nachteile von React betrachten und Kriterien bestimmen, wann ihr Einsatz Sinn macht.
+
+## Motivation hinter React
+Facebooks Motivation hinter React war es, seinen Frontend-Code leichter zu verstehen und besser wartbar zu machen. In ihren Vorträgen über React beschreiben u.a. [Jing Chen](https://twitter.com/jingc?lang=en), [Christopher Chedeau](https://twitter.com/vjeux) und [Pete Hunt](https://twitter.com/floydophone), dass Entwicklungsverzögerungen vor allem zustandekamen durch die lange Zeit, die nötig war, um sich das Verhalten von bestehendem Code zu vergegenwärtigen oder Bugs nachzuvollziehen. Je stärker gewachsener Code miteinander verwoben ist, desto schwieriger wird er zu warten.
+
+Das Ziel von React ist es, einfacheren Code schreiben zu können, dessen Bestandteile weniger miteinander verschränkt oder verwoben sind. Um das zu erreichen, war es nötig, nicht immer dem _leichtesten_ und vertrautesten Weg zu folgen (vgl. ["Simplicity Matters"](https://www.youtube.com/watch?v=rI8tNMsozo0) &ndash; [Rich Hickey](https://twitter.com/richhickey), vor allem die Unterscheidung zwischen _einfach_ (simple) und _leicht_ (easy)).
+
+
 
 #### Eine Bibliothek, kein Framework
-Die ersten Reaktionen auf React waren verhalten oder [schnippisch](https://twitter.com/cowboy/status/339858717451362304). Zum einen, weil einiges an React auf den ersten Blick fremdartig ist. Es geht Probleme verschieden an als bisherige Lösungen. Daher ist es in doppelter Hinsicht _alien technology_ - einmal als fremdartige Technik, dann aber auch als Technik wie vom anderen Stern, die zu gut ist, um wahr zu sein.
+Die ersten Reaktionen auf React waren verhalten oder [schnippisch](https://twitter.com/cowboy/status/339858717451362304). Zum einen, weil einiges an React auf den ersten Blick fremdartig ist. Es geht Probleme verschieden an als bisherige Lösungen. Daher ist es in doppelter Hinsicht _alien technology_ &ndash; einmal als fremdartige Technik, dann aber auch als Technik wie vom anderen Stern, die zu gut ist, um wahr zu sein.
 
-Zum anderen waren die Reaktionen gemischt, weil viele enttäuscht waren in React kein mächtiges Framework zu finden. React ist eine Bibliothek, die sich - in MVC gedacht - vor allem um die View- und ein wenig um die Controller-Schicht kümmert. Es will ein flexibles Werkzeug sein, das es erlaubt Anwendungen in der Sprache ihrer eigenen Problemdomäne - und nicht der Sprache eines Frameworks - zu modellieren.
-Da React mir nicht die Grundstruktur meiner Anwendung vorschreibt (vgl. ["Architecture the Lost Years"](https://www.youtube.com/watch?v=WpkDN78P884) - [Robert Martin](https://twitter.com/unclebobmartin)) schränkt es mich weniger ein und lässt sich hervorragend in bestehende Anwendungen integrieren, ohne dass ich dort alles Umstricken müsste. React erlaubt mir größere Freiheiten, fordert dadurch aber auch umsichtigeres Arbeiten.
-Frameworks nehmen mir oft lästige repetitive Verdrahtungsarbeiten ab, sind aber selten flexibel genug, um sie über längere Zeit in dynamischen Projekten einzusetzen. Und wenn es anfangs sinnvoll und sicherer erscheinen mag den mit dem Einsatz des Framework verbundenen Kontrollverlust zu begrüßen, so entpuppt meist er sich doch schnell als Ursache für einen schleichend wachsenden Kampf gegen das Framework. Gut gemeinte Puffer stellen sich leider allzu oft letztlich als Löffel heraus mit denen ich auf einmal Brot schneiden soll - natürlich kann ich mich damit nicht mehr schneiden, aber das Brot eben leider auch nicht...  
+Zum anderen waren die Reaktionen gemischt, weil viele enttäuscht waren in React kein mächtiges Framework zu finden. React ist eine Bibliothek, die sich &ndash; in MVC gedacht &ndash; vor allem um die View- und ein wenig um die Controller-Schicht kümmert. Es will ein flexibles Werkzeug sein, das es erlaubt Anwendungen in der Sprache ihrer eigenen Problemdomäne &ndash; und nicht der Sprache eines Frameworks &ndash; zu modellieren.
+Da React mir nicht die Grundstruktur meiner Anwendung vorschreibt (vgl. ["Architecture the Lost Years"](https://www.youtube.com/watch?v=WpkDN78P884) &ndash; [Robert Martin](https://twitter.com/unclebobmartin)) schränkt es mich weniger ein und lässt sich hervorragend in bestehende Anwendungen integrieren, ohne dass ich dort alles Umstricken müsste. React erlaubt mir größere Freiheiten, fordert dadurch aber auch umsichtigeres Arbeiten.
+Frameworks nehmen mir oft lästige repetitive Verdrahtungsarbeiten ab, sind aber selten flexibel genug, um sie über längere Zeit in dynamischen Projekten einzusetzen. Und wenn es anfangs sinnvoll und sicherer erscheinen mag den mit dem Einsatz des Framework verbundenen Kontrollverlust zu begrüßen, so entpuppt meist er sich doch schnell als Ursache für einen schleichend wachsenden Kampf gegen das Framework. Gut gemeinte Puffer stellen sich leider allzu oft letztlich als Löffel heraus mit denen ich auf einmal Brot schneiden soll &ndash; natürlich kann ich mich damit nicht mehr schneiden, aber das Brot eben leider auch nicht...  
 Gerade in der JavaScript-Landschaft ist die Halbwertszeit von Frameworks kurz (selbst die Tage von Angular 1 sind gezählt) und das Aufkommen neuer Lösungen nimmt kein Ende. Es scheint noch keine gute generische Lösung gefunden worden zu sein, wie man mit JavaScript Benutzeroberflächen im Browser schreibt. Warum sollte man sich also an ein Framework binden, das letztlich vor allem folgendes bleibt: "A product with the business logic removed, but all of the assumptions left in." ([_Devil’s Dictionary of Programming_](http://programmingisterrible.com/post/65781074112/devils-dictionary-of-programming))?
 Frameworks behalten ihre Daseinsberechtigung, vor allem in Projekten an denen große verteilte Teams arbeiten, die bereits die Werte des Frameworks teilen. Wir sollten jedoch aufhören, nur noch nach Frameworks Ausschau zu halten und die Stärken eines Ökosystems von Bibliotheken nicht aus dem Blick verlieren. React hat schon heute bewiesen, dass es für jede Projekt- und Teamgröße eine gute Lösung ist.
 
 ### Motivation hinter React
-Facebooks Motivation hinter React war es, seinen Frontend-Code leichter zu verstehen und besser wartbar zu machen. In ihren Vorträgen über React beschreiben u.a. [Jing Chen](https://twitter.com/jingc?lang=en), [Christopher Chedeau](https://twitter.com/vjeux) und [Pete Hunt](https://twitter.com/floydophone), dass Entwicklungsverzögerungen vor allem zustandekamen durch die lange Zeit, die nötig war, um sich das Verhalten von bestehendem Code zu vergegenwärtigen oder Bugs nachzuvollziehen. Je stärker gewachsener Code miteinander verwoben ist, desto schwieriger zu warten wird er.  
-Das Ziel von React ist es, einfacheren Code schreiben zu können, der weniger miteinander verschränkt oder verwoben ist. Um das zu erreichen, war es nötig, nicht immer dem einfachsten und vertrautesten Weg zu folgen (vgl. ["Simplicity Matters"](https://www.youtube.com/watch?v=rI8tNMsozo0) - [Rich Hickey](https://twitter.com/richhickey)).
 
 ### Reacts Bauteile
 Im wesentlichen besteht React aus folgenden Bestandteilen:
@@ -43,6 +52,11 @@ http://jsbin.com/tuzuxufiwu/1/edit?html,js,output
 
 toggler:
 http://jsbin.com/tuliginexu/edit?html,css,js,output
+
+## Fazit
+Heute ist es in aller Munde und Ideen aus React haben ihren Weg in [Ember](https://www.isemberfastyet.com) und viele [andere Bibliotheken](https://github.com/staltz/cycle) gefunden.
+Einige Reaktionen fielen jedoch verhalten aus, was vor allem daran zu liegen scheint, dass React neue und unbekannte Wege beschreitet &ndash; zum Beispiel Integrieren von Templates in JavaScript-Dateien
+Auf den ersten Blick störte viele Reacts Andersartigkeit.
 
 ### Links
 + ["Legal"-Datei zur Lizenz](https://code.facebook.com/posts/1639473982937255/updating-our-open-source-patent-grant)
