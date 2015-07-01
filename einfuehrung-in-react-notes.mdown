@@ -1,3 +1,12 @@
+zähl-button:
+http://jsbin.com/qeqigu/1/edit?html,js,output
+
+zähl-button mit state:
+
+toggler:
+http://jsbin.com/fevema/1/edit?html,js,output
+
+
 Heute ist es in aller Munde und Ideen aus React haben ihren Weg in [Ember](https://www.isemberfastyet.com) und viele [andere Bibliotheken](https://github.com/staltz/cycle) gefunden.
 Einige Reaktionen fielen jedoch verhalten aus, was vor allem daran zu liegen scheint, dass React neue und unbekannte Wege beschreitet &ndash; zum Beispiel Integrieren von Templates in JavaScript-Dateien
 Auf den ersten Blick störte viele Reacts Andersartigkeit.
