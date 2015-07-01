@@ -259,7 +259,10 @@ Ein simples Beispiel hierfür sind aufklappbare Textblöcke. Durch Klicken auf d
         var that = this;
         return Object.keys(data).map(function(el) {
           var slug = data[el].slug;
-          return <CollapsibleBlock key={slug} book={that.props.books[slug]} toggleHandler={that.toggleHandler} toggleState={that.state[slug]} />
+          return(
+            <CollapsibleBlock key={slug} book={that.props.books[slug]}
+                              toggleHandler={that.toggleHandler}
+                              toggleState={that.state[slug]} />
         });
       },
 
@@ -267,7 +270,7 @@ Ein simples Beispiel hierfür sind aufklappbare Textblöcke. Durch Klicken auf d
         return(
           <div>
             <h1>Toggable Content</h1>
-            <button onClick={ this.toggleAll }>Toggle all</button> // (4)
+            <button onClick={ this.toggleAll }>Toggle all</button> {/* (4) */}
             <div>
               { this.toggableBooks(this.props.books) }
             </div>
