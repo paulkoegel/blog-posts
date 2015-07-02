@@ -133,7 +133,7 @@ In der `add`-Funktion setzen wir dann mit `setState` einen neuen State: `count` 
 ### 3. Beispiel: drei farbige Buttons mit Props
 Neben State, der von einer Komponente verändert werden kann, gibt es noch Props, die von außen an Komponenten übergeben werden und innerhalb der Komponente nicht veränderlich sind. Die explizite Unterscheidung zwischen veränderlichem State und unveränderlichen Props macht es leichter das Verhalten von Komponenten nachzuvollziehen. Sie ist ein wichtiges Merkmal der Komponentenarchitektur und dient Facebooks ursprünglichem Ziel Code nachvollziehbarer zu machen. Fehlerhafte Änderungen am Zustand meiner Anwendung können nur von Stateänderungen, nie jedoch von Props herrühren.  
 
-Ein einfaches Beispiel für Props wäre, wenn wir drei Buttons in drei Farben haben wollten:
+Ein einfaches Beispiel für Props können wir sehen, wenn wir mehrere farbige Buttons haben:
 
     var ButtonCounter = React.createClass({
       // `getInitialState` und `add` wie gehabt
@@ -177,8 +177,9 @@ Ein einfaches Beispiel für Props wäre, wenn wir drei Buttons in drei Farben ha
     });
 
     React.render(<App />,
-  document.querySelector('#react-container')); // (5)
+      document.querySelector('#react-container')); // (5)
 
+[Interaktive Demo bei JSBin](http://jsbin.com/yesaka/edit?js,output)
 
 Zunächst haben wir hier erstmalig eine Komponentenverschachtelung **(1)**. Die neue `App`-Komponente ruft in ihrer `render`-Funktion die `ButtonCounter`-Komponente auf - und zwar für jede ihrer drei Farben **(2)**.
 Die `colour`-Prop wird von `App` wie ein HTML-Attribut an die `ButtonCounter` übergeben **(1)**. Innerhalb der `ButtonCounter` ist die jeweilige `colour` über `this.props.colour` verfügbar **(3)**. Props sind in Komponenten nur les-, nicht schreibbar. Das heißt jedoch nicht, dass der Farbwert eines Buttons in unserer Anwendung _absolut_ unveränderlich ist. Die `ButtonCounter`-Komponente selbst kann ihre Farbe nicht verändern, aber die umgebende `App`-Komponente setzt ja von außen die Farbe der `ButtonCounter`. Da die Farben in `App` Teil des States sind, können wir sie auch verändern:
@@ -190,9 +191,10 @@ Die `colour`-Prop wird von `App` wie ein HTML-Attribut an die `ButtonCounter` ü
       componentDidMount: function() { // (1)
         var that = this
         window.setInterval(function() { // (2)
-          that.setState({ colours: [that.state.colours[1], // (3)
-                                    that.state.colours[2],
-                                    that.state.colours[0]] });
+          that.setState({ colours: [ // (3)
+                            that.state.colours[1],
+                            that.state.colours[2],
+                            that.state.colours[0]] });
         }, 500);
       }
     });
@@ -297,8 +299,8 @@ Wir hatten an verschiedenen Stellen in den Beispielen gesehen, dass React nach A
 Den DOM synchron zu halten ist eine der großen Herausforderungen für "JavaScript-MV\*"-Lösungen. In der Regel wird dazu auf die ein oder andere Form von Data Binding gesetzt, was zwar zunächst _leicht_ einzubauen ist, unter der Haube aber alles andere als _einfach_ ist und bei komplexen Anwendungen oft zu schwer nachzuvollziehenden Bugs oder Performanceproblemen führen kann.
 
 Hier ein Beispiel aus Prismatic:
-
-![](davis-prismatic-example-02-after-cropped.png)
+![Prismatic DOM updates illustrated](https://raw.githubusercontent.com/paulwittmann/blog-posts/master/images/davis-prismatic-example-02-after-cropped.png)
+(Quelle: ["The challenges and benefits of a functional reactive frontend"](https://www.youtube.com/watch?v=TihhFQjtiZU) &ndash; [Ian Davis](https://twitter.com/jungziege)).
 
 Zu sehen ist eine Liste von zwei Artikeln unter der Rubrik "Urban Exploration". Beide Artikel haben in ihrer oberen rechten Ecke ihre Tags angezeigt. Wenn ich nun auf "Urban Exploration" beim oberen Artikel klicke, muss der DOM an vier Stellen verändert werden.
 Zum einen muss beim oberen Artikel selbst ein Häkchen neben dem "Urban Exploration" Tag erscheinen. Das gleiche muss beim unteren Artikel und ganz oben unter der Rubriküberschrift geschehen. Außerdem muss noch die Zahl der Follower für "Urban Exploration" um eins erhöht werden.
