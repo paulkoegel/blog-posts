@@ -338,12 +338,12 @@ Echte DOM-Anpassungen sind meist _der_ Flaschenhals bei der Renderingperformanz 
 Das Problem bei Rendering ohne einen virtuellen DOM ist auch, dass sich nicht gut sagen lässt welche Stelle eines UI-Elements sich geändert hat. Muss ich nur ein Häkchen hinzufügen, oder doch noch eine Zahl verändern? Da sich hier ohne viel unwartbaren Aufwand nicht gut Buch führen lässt, rendern bestehende Lösungen zumindest ihre Bausteine (Views etc.) komplett neu.  
 React ist vor allem performanter da sie präzise DOM-Updates nutzt, obwohl ich sogar davon ausgehen kann, dass die ganze Anwendung neu gerendert wird. Schön :)
 
-Hier ein Beispiel wo links React und rechts Backbon auf eine Texteingabe reagieren. Am Ende des Eingabefelds stehen mathematische Formeln die mit [KaTeX](https://github.com/Khan/KaTeX) TeX-artig gerendert werden - eine teure Renderingoperation, wie man am Flackern auf der rechten Seite sehen kann. React brilliert hier, das die KaTeX-Formeln überhaupt nur einmal wirklich neu in den DOM geschrieben werden - sie ändern sich ja nicht. In Backbone wird ständig die ganze View neu in den DOM geschrieben und entsprechend flackert es dort.
+Hier ein Beispiel bei dem links React und rechts Backbone auf eine Texteingabe reagieren. Am Ende des Eingabefelds stehen mathematische Formeln, die mit [KaTeX](https://github.com/Khan/KaTeX) TeX-artig gerendert werden &ndash; eine teure Renderingoperation, wie man am Flackern auf der rechten Seite sieht. React brilliert hier, da die KaTeX-Formeln nur einmal in den DOM geschrieben werden &ndash; danach ändern sie sich nicht mehr. In Backbone wird ständig die ganze View neu in den DOM geschrieben und entsprechend flackert es dort.
 
-![](monkeys-slow.gif)
+![React -vs- Backbone Performanzdemo](https://raw.githubusercontent.com/paulwittmann/blog-posts/master/images/monkeys-slow.gif)
 (Quelle: ["Hack Reactor"](http://joelburget.com/backbone-to-react/) &ndash; [Joel Burget](https://twitter.com/dino_joel))
 
-Mehr zur Implementierung des virtuellen DOMs in [unserem Artikel ""]().
+Mehr zur Implementierung des virtuellen DOMs in unserem Artikel [Virtuelles DOM mit React.js](http://reactjs.de/posts/virtuelles-dom-mit-react-js).
 
 
 ## Fazit
