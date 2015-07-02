@@ -9,6 +9,9 @@
   .main-column h1 {
     display: none;
   }
+  .main-column img {
+    width: 100%;
+  }
 </style>
 
 Einführung in React
