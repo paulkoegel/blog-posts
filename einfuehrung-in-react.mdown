@@ -303,7 +303,7 @@ Einen ähnlichen Ansatz würde man wählen, wenn Komponenten-State voneinander a
 Anhand einfacher Beispiele haben wir einen ersten Einblick in das Arbeiten mit React Komponenten bekommen und gesehen wie React mit JSX und JavaScript Benutzeroberflächen modelliert. Im letzten Beispiel haben wir gelernt wie man einfach Komponenten-Zustände koordinieren kann. Der gezeigte Lösungsweg ist jedoch immer weniger geeignet je weiter die zu koordinierenden Komponenten in unserer Komponentenhierarchie voneinander entfernt liegen. Einen Clickhandler von Kind- zu Mutterkomponente zu reichen ist leicht, aber was machen wir wenn es über 3 Hierarchieebenen passieren soll? React bietet hierfür keine Lösung mehr, da es sich auf das Bauen von UI-Elementen beschränkt und für komplexere Koordinationen keinen Weg vorgeben möchte. Facebooks Lösung dazu heißt Flux, verfolgt die gleichen Ziele und hält sich an die gleichen Ideale wie React. Flux stellen wir euch in einem kommenden Artikel vor, man kann React aber schon heute als Renderingschicht in eine bestehende Backbone-Architektur integrieren. [Hier]() zeigen wir euch wie das geht.
 
 ## Virtueller DOM
-Wir hatten an verschiedenen Stellen in den Beispielen gesehen, dass React nach Aufruf von `setState` automatisch den DOM neu rendert und unsere Datenänderungen wie von Geisterhand in unserer Benutzeroberfläche zu sehen sind. In diesem Abschnitt möchten wir verstehen wie genau das vonstatten geht.
+Wir hatten an verschiedenen Stellen in den Beispielen gesehen, dass React nach Aufruf von `setState` automatisch den DOM neu rendert und unsere Datenänderungen wie von Geisterhand in unserer Benutzeroberfläche zu sehen sind. In diesem Abschnitt möchten wir verstehen, wie genau das vonstatten geht.
 
 Den DOM synchron zu halten ist eine der großen Herausforderungen für "JavaScript-MV\*"-Lösungen. In der Regel wird dazu auf die ein oder andere Form von Data Binding gesetzt, was zwar zunächst _leicht_ einzubauen ist, unter der Haube aber alles andere als _einfach_ ist und bei komplexen Anwendungen oft zu schwer nachzuvollziehenden Bugs oder Performanceproblemen führen kann.
 
@@ -326,12 +326,40 @@ Mit React kann ich so arbeiten als würde die `render`-Funktion aller Komponente
 Aber wie kann das gut gehen? Das Geheimnis heißt virtueller DOM. Die `render`-Funktionen von React-Komponenten modifizieren nicht den tatsächlichen DOM, sondern erzeugen lediglich eine Repräsentation des DOMs.  
 Ein Aufruf von `React.DOM.div` beziehungsweise dem JSX `<div>` allein führt zu keiner Änderung im DOM. Beides sind reine Funktionen, die lediglich eine Repräsentation des DOMs zurückgeben &ndash; z.B. ein Buttonelement mit einer bestimmten Farbe, abhängig von den Datenstrukturen (State und Props) mit denen wir den Zustand unserer Anwendung modellieren.
 
-Diese Repräsentationen sind nichts weiter als normale JavaScript-Objekte, die z.B. so aussehen könnten:
+Diese Repräsentationen sind nichts weiter als normale JavaScript-Objekte, die z.B. so aussehen (Demo wie man diese Objekte sehen kann [hier](http://jsbin.com/lugudu/edit?html,js,console)):
 
-    { div: {
-        h1: { className: 'mainHeadline', content: 'Hallo ReactJS.de' },
-        p: { content: 'als würden wir ständig den DOM neurendern' }
-      }}
+    {
+      "type": "div",
+      [...]
+      "_store": {
+        "props": {
+          "children": [
+            {
+              "type": "h1",
+              [...]
+              "_store": {
+                "props": {
+                  "className": "mainHeadline",
+                  "children": "Hallo ReactJS.de"
+                }
+                [...]
+              }
+            },
+            {
+              "type": "p",
+              [...]
+              "_store": {
+                "props": {
+                  "children": "Lorem ipsum"
+                }
+                [...]
+              }
+            }
+          ]
+        }
+        [...]
+      }
+    }
 
 Echte DOM-Anpassungen sind meist _der_ Flaschenhals bei der Renderingperformanz und _können_ derzeit nicht bei jeder Datenänderung ausgelöst werden, wenn man eine nutzbare Seite haben möchte. Was jedoch dank performanten JavaScript-Engines heutzutage geht, ist es die Repräsentation des DOMs mit einer früheren zu vergleichen, um so minimale Änderungen zu bestimmen, die auf dem echten DOM vorgenommen werden.
 
