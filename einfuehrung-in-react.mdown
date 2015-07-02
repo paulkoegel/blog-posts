@@ -373,17 +373,14 @@ Hier ein Beispiel bei dem links React und rechts Backbone auf eine Texteingabe r
 
 Mehr zur Implementierung des virtuellen DOMs in unserem Artikel [Virtuelles DOM mit React.js](http://reactjs.de/posts/virtuelles-dom-mit-react-js).
 
-
 ## Fazit
-
-
+_Folgt in Kürze._
 
 ## Die Leute hinter React
-+ Jordan Walke
++ [Jordan Walke](https://twitter.com/jordwalke)
 + [Pete Hunt](https://twitter.com/floydophone)
 + [Christopher Chedeau](https://twitter.com/vjeux)
 + [Jing Chen](https://twitter.com/jingc?lang=en)
-
 
 ## Anhang
 
