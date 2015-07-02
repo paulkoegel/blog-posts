@@ -9,6 +9,16 @@
   .main-column h1 {
     display: none;
   }
+  .main-column h2 {
+    font-weight: bold;
+    font-size: 33px;
+    margin-top: 40px;
+    margin-bottom: -5px;
+  }
+  .main-column h3 {
+    font-weight: 400;
+    font-size: 22px;
+  }
   .main-column img {
     width: 100%;
   }
@@ -24,14 +34,14 @@ Danach schauen wir uns die beiden wichtigsten Ideen hinter React an &ndash; die 
 React ist eine JavaScript-Bibliothek zum Erstellen von Benutzeroberflächen. Sie wurde 2013 von Facebook unter [BSD-Lizenz](https://de.wikipedia.org/wiki/BSD-Lizenz) veröffentlicht und schlägt seitdem immer größere Wellen und beeinflusst nachhaltig die gesamte JavaScript-Frontendlandschaft.
 Sie wird verwendet von Facebook, Instagram, Whatsapp, Yahoo, AirBnB, dem Atom-Editor und [vielen anderen mehr](https://github.com/facebook/react/wiki/Sites-Using-React).
 
-React machte schnell vor allem wegen seines virtuellen DOMs und der hervorragenden Rendering-Performanz von sich reden. Daneben bietet es eine modulare Komponentenarchitektur, die als Basis für modularen und leicht nachzuvollziehenden Frontendcode dient.
+React machte schnell vor allem wegen seines virtuellen DOMs und der hervorragenden Renderingperformanz von sich reden. Daneben bietet es eine modulare Komponentenarchitektur, die als Basis für modularen und leicht nachzuvollziehenden Frontendcode dient.
 
 Diese Neuerungen bringen auch Nichtvertrautes mit sich. Der Einstieg in React gelingt am besten, wenn man bereit ist, sich auf unkonventionelle Ideen einzulassen und alte Überzeugungen abzulegen.
 Wir begreifen immer klarer, welche Vorteile die neuen Wege mit sich bringen, die React uns beschreiten lässt. Das Netz wimmelt vor begeisterten Erfahrungsberichten und Bibliotheken, die auf React aufbauen und immer mehr React-Anwendungen sprießen aus dem Boden.  
 Höchste Zeit, dass wir uns React näher anschauen!
 
 ### Motivation hinter React
-Facebooks Motivation hinter React war es, seinen Frontend-Code leichter verstehbar und besser wartbar zu machen. Vor React dauerte es lange, um sich das Verhalten von bestehendem Code zu vergegenwärtigen. Es gab Teile des Codes, die so komplex waren, dass niemand außer ein bestimmter Mitarbeiter sie anfassen wollte. Bugs wie unsynchronisierte Zähler ungelesener Nachrichten traten immer wieder auf. Allgemein gilt, dass je stärker gewachsener Code miteinander verwoben ist, desto schwieriger wird er zu warten.
+Facebooks Motivation hinter React war es, seinen Frontendcode leichter verstehbar und besser wartbar zu machen. Vor React dauerte es lange, um sich das Verhalten von bestehendem Code zu vergegenwärtigen. Es gab Teile des Codes, die so komplex waren, dass niemand außer ein bestimmter Mitarbeiter sie anfassen wollte. Bugs wie unsynchronisierte Zähler ungelesener Nachrichten traten immer wieder auf. Allgemein gilt, dass je stärker gewachsener Code miteinander verwoben ist, desto schwieriger wird er zu warten.
 
 Das Ziel von React ist es, _einfacheren_ Code schreiben zu können, dessen Bestandteile weniger miteinander verschränkt oder verwoben sind (der Wortursprung von [komplex](https://de.wiktionary.org/wiki/komplex)). Um das zu erreichen, war es nötig, nicht immer dem _leichtesten_ und vertrautesten Weg zu folgen (vgl. ["Simplicity Matters"](https://www.youtube.com/watch?v=rI8tNMsozo0) &ndash; [Rich Hickey](https://twitter.com/richhickey); vor allem zur Unterscheidung zwischen _einfach_ (simple) und _leicht_ (easy)).
 
@@ -53,7 +63,7 @@ synthetische Events, um jQuery-artig Browserunterschiede wegzuabstrahieren
 Auf die ersten beiden Punkte möchte ich nun genauer eingehen. Der dritte Punkt sei an dieser Stelle nur der Vollständigkeit halber erwähnt und muss uns für diese Einführung nicht weiter interessieren.
 
 ## Komponentenarchitektur
-Reacts zentraler und einziger Baustein sind Komponenten. React-Komponenten sind _ähnlich_ wie Web Components oder Angular Directives.  
+Reacts zentraler und einziger Baustein sind Komponenten. React-Komponenten ähneln Web Components oder Angular Directives.  
 
 ### 1. Beispiel: eine einfache Komponente
 Unsere erste Komponente macht nicht viel mehr als einen Klick auf einen Button abzufangen:
@@ -77,7 +87,7 @@ Unsere erste Komponente macht nicht viel mehr als einen Klick auf einen Button a
 
 [Interaktive Demo bei JSBin](http://jsbin.com/qeqigu/1/edit?html,js,output,console)
 
-Komponenten werden mit `React.createClass` **(1)** erzeugt. Die wichtigeste Funktion einer Komponente ist `render` **(2)**, wo das Markup für die DOM-Repräsentation der Komponente definiert wird. Die `add`-Funktion im Beispiel ist eine von uns ausgedachte, die gerade nicht viel mehr macht als Klickevents in die JavaScript Konsole des Browsers zu schreiben. Zu bemerken ist noch, dass React den ganz normalen `onClick`-Handler des Browsers verwendet, der als Attribut auf dem `<button>` gesetzt wird, statt beispielsweise durch CSS-Selektoren. Durch geschweifte Klammern (`{}`) können in JSX JavaScript-Ausdrücke eingebettet werden.
+Komponenten werden mit `React.createClass` **(1)** erzeugt. Die wichtigste Funktion einer Komponente ist `render` **(2)**, wo das Markup für die DOM-Repräsentation der Komponente definiert wird. Die `add`-Funktion im Beispiel ist eine von uns ausgedachte, die gerade nicht viel mehr macht als Klickevents in die JavaScript Konsole des Browsers zu schreiben. Zu bemerken ist noch, dass React den ganz normalen `onClick`-Handler des Browsers verwendet, der als Attribut auf dem `<button>` gesetzt wird, statt beispielsweise durch CSS-Selektoren. Durch geschweifte Klammern (`{}`) können in JSX JavaScript-Ausdrücke eingebettet werden.
 
 ### JSX
 Wie kommt es, dass wir mitten in der `render`-Funktion **(3)** auf einmal HTML schreiben können? React verwendet dazu JSX, eine schlanke Syntaxerweiterung für JavaScript, mit der es leichter ist Markup zu schreiben.  
@@ -98,9 +108,9 @@ Dieser Code dient uns nur zur Illustration und wir können `React.DOM` zugunsten
 
 JSX war mit dem Erscheinen von React für viele der erste Stein des Anstoßes. Warum keine schlankere Templating-Sprache wie HAML und statt dessen XML-artige Syntax? Warum inline Eventhandler setzen? Und vor allem, warum bitte sollen wir auf einmal unser Markup in einer JavaScript-Datei schreiben, wo wir uns doch jahrelang die Trennung von HTML, CSS und JavaScript eingebläut haben?  
 
-Die Macher von React halten die Aufteilung nach Technologien (HTML, CSS, JavaScript) für kein gutes Kriterium für eine sinnvolle _separation of concerns_. Sie argumentieren stattdessen, dass wir zur Trennung der Aspekte unseres Frontend-Codes besser Komponenten als Grundlage benutzen sollten. Daher ist es nur konsequent, wenn man allen Code, der zu einer Komponente gehört auch in eine Datei schreibt (mehr: ["React: Rethinking best practices"](https://www.youtube.com/watch?v=x7cQ3mrcKaY) &ndash; [Pete Hunt](https://twitter.com/floydophone), JSConf EU 2013). <a href='#footnote-2' id='footnote-2-anchor'>[2]</a>
+Die Macher von React halten die Aufteilung nach Technologien (HTML, CSS, JavaScript) für kein gutes Kriterium für eine sinnvolle _separation of concerns_. Sie argumentieren stattdessen, dass wir zur Trennung der Aspekte unseres Frontendcodes besser Komponenten als Grundlage benutzen sollten. Daher ist es nur konsequent, wenn man allen Code, der zu einer Komponente gehört auch in eine Datei schreibt (mehr: ["React: Rethinking best practices"](https://www.youtube.com/watch?v=x7cQ3mrcKaY) &ndash; [Pete Hunt](https://twitter.com/floydophone), JSConf EU 2013). <a href='#footnote-2' id='footnote-2-anchor'>[2]</a>
 
-Ein weiterer Vorteil dieses Ansatzes ist es, dass React-Programmierer keine neue Templating-Sprache lernen müssen. JSX ist, wie angemerkt, nur eine sehr dünne syntaktische Abtraktion über normale JavaScript Funktionsaufrufe.  
+Ein weiterer Vorteil dieses Ansatzes ist es, dass React-Programmierer keine neue Templating-Sprache lernen müssen. JSX ist, wie angemerkt, nur eine sehr dünne syntaktische Abstraktion über normale JavaScript Funktionsaufrufe.  
 Statt _logicless templates_ à la Handlebars, die einen schnell unnötig einschränken, wählt React genau den umgekehrten Ansatz und lässt uns zum Bauen unserer Templates die ganze Mächtigkeit von JavaScript nutzen.
 
 ### 2. Beispiel: eine einfache Komponente mit State
@@ -294,7 +304,7 @@ Die `CollapsibleBlock`-Komponente hat nun gar keinen State mehr **(6)**. Wenn ih
 Einen ähnlichen Ansatz würde man wählen, wenn Komponenten-State voneinander abhängig ist - etwa wenn man nur ein Element aus einer Liste auswählen darf. Sobald eine Komponente einen Klick empfängt muss sie ggf. eine zuvor ausgewählte Schwesternkomponente deaktivieren. Auch hier würde man am besten in der Mutterkomponente nachhalten welches Unterelement gerade ausgewählt ist und in einem Klickhandler der Mutterkomponente entscheiden welches Kind de-/aktiviert werden muss.
 
 ### Zwischenfazit
-Anhand einfacher Beispiele haben wir einen ersten Einblick in das Arbeiten mit React Komponenten bekommen und gesehen wie React mit JSX und JavaScript Benutzeroverflächen modelliert. Im letzten Beispiel haben wir gelernt wie man einfach Komponenten-Zustände koordinieren kann. Der gezeigte Lösungsweg ist jedoch immer weniger geeignet je weiter die zu koordinierenden Komponenten in unserer Komponentenhierarchie voneinander entfernt liegen. Einen Clickhandler von Kind- zu Mutterkomponente zu reichen ist leicht, aber was machen wir wenn es über 3 Hierarchieebenen passieren soll? React bietet hierfür keine Lösung mehr, da es sich auf das Bauen von UI-Elementen beschränkt und für komplexere Koordinationen keinen Weg vorgeben möchte. Facebooks Lösung dazu heißt Flux, verfolgt die gleichen Ziele und hält sich an die gleichen Ideale wie React. Flux stellen wir euch in einem kommenden Artikel vor, man kann React aber schon heute als Rendering-Schicht in eine bestehende Backbone-Architektur integrieren. [Hier]() zeigen wir euch wie das geht.
+Anhand einfacher Beispiele haben wir einen ersten Einblick in das Arbeiten mit React Komponenten bekommen und gesehen wie React mit JSX und JavaScript Benutzeroberflächen modelliert. Im letzten Beispiel haben wir gelernt wie man einfach Komponenten-Zustände koordinieren kann. Der gezeigte Lösungsweg ist jedoch immer weniger geeignet je weiter die zu koordinierenden Komponenten in unserer Komponentenhierarchie voneinander entfernt liegen. Einen Clickhandler von Kind- zu Mutterkomponente zu reichen ist leicht, aber was machen wir wenn es über 3 Hierarchieebenen passieren soll? React bietet hierfür keine Lösung mehr, da es sich auf das Bauen von UI-Elementen beschränkt und für komplexere Koordinationen keinen Weg vorgeben möchte. Facebooks Lösung dazu heißt Flux, verfolgt die gleichen Ziele und hält sich an die gleichen Ideale wie React. Flux stellen wir euch in einem kommenden Artikel vor, man kann React aber schon heute als Renderingschicht in eine bestehende Backbone-Architektur integrieren. [Hier]() zeigen wir euch wie das geht.
 
 ## Virtueller DOM
 Wir hatten an verschiedenen Stellen in den Beispielen gesehen, dass React nach Aufruf von `setState` automatisch den DOM neu rendert und unsere Datenänderungen wie von Geisterhand in unserer Benutzeroberfläche zu sehen sind. In diesem Abschnitt möchten wir verstehen wie genau das vonstatten geht.
@@ -302,19 +312,19 @@ Wir hatten an verschiedenen Stellen in den Beispielen gesehen, dass React nach A
 Den DOM synchron zu halten ist eine der großen Herausforderungen für "JavaScript-MV\*"-Lösungen. In der Regel wird dazu auf die ein oder andere Form von Data Binding gesetzt, was zwar zunächst _leicht_ einzubauen ist, unter der Haube aber alles andere als _einfach_ ist und bei komplexen Anwendungen oft zu schwer nachzuvollziehenden Bugs oder Performanceproblemen führen kann.
 
 Hier ein Beispiel aus Prismatic:
-![Prismatic DOM updates illustrated](https://raw.githubusercontent.com/paulwittmann/blog-posts/master/images/davis-prismatic-example-02-after-cropped.png)
+![Prismatic DOM Updates](https://raw.githubusercontent.com/paulwittmann/blog-posts/master/images/davis-prismatic-example-02-after-cropped.png)
 (Quelle: ["The challenges and benefits of a functional reactive frontend"](https://www.youtube.com/watch?v=TihhFQjtiZU) &ndash; [Ian Davis](https://twitter.com/jungziege)).
 
 Zu sehen ist eine Liste von zwei Artikeln unter der Rubrik "Urban Exploration". Beide Artikel haben in ihrer oberen rechten Ecke ihre Tags angezeigt. Wenn ich nun auf "Urban Exploration" beim oberen Artikel klicke, muss der DOM an vier Stellen verändert werden.
-Zum einen muss beim oberen Artikel selbst ein Häkchen neben dem "Urban Exploration" Tag erscheinen. Das gleiche muss beim unteren Artikel und ganz oben unter der Rubriküberschrift geschehen. Außerdem muss noch die Zahl der Follower für "Urban Exploration" um eins erhöht werden.
+Zum einen muss beim oberen Artikel selbst ein Häkchen neben dem "Urban Exploration"-Tag erscheinen. Das gleiche muss beim unteren Artikel und ganz oben unter der Rubriküberschrift geschehen. Außerdem muss noch die Zahl der Follower für "Urban Exploration" um eins erhöht werden.
 
 Das React Entwicklungsteam wollte das Problem der DOM-Synchronisierung ein für alle mal lösen, nahm einen Schritt Abstand, und fragte sich ganz unvoreingenommen, was denn die aller _einfachste_ Lösung sei. Die Antwort ist denkbar einfach: wie in den guten alten Zeiten von rein serverseitigen Anwendungen bei jeder Änderung _alles_ neu rendern. So kann garantiert keine Stelle im DOM vergessen werden.
 
-Nur wie soll man das jemals bauen können ohne sich von akzeptabler Rendering-Performanz zu verabschieden? Die ersten Schritt waren in der Tat ernüchternd. In Prototypen bei denen Komponenten in festen Zeitintervallen neu gerendert wurden flackerten, verloren die Scrollposition, oder den Zustand von Eingabefeldern. Zum Glück ließ sich das Team davon nicht abschrecken. Der Vorteil nicht mehr über Rendering nachdenken zu müssen war zu verlockend, um vorschnell die Flinte ins Korn zu werfen.
+Nur wie soll man das jemals bauen können ohne sich von akzeptabler Renderingperformanz zu verabschieden? Die ersten Schritt waren in der Tat ernüchternd. In Prototypen bei denen Komponenten in festen Zeitintervallen neu gerendert wurden flackerten, verloren die Scrollposition, oder den Zustand von Eingabefeldern. Zum Glück ließ sich das Team davon nicht abschrecken. Der Vorteil nicht mehr über Rendering nachdenken zu müssen war zu verlockend, um vorschnell die Flinte ins Korn zu werfen.
 
 Der Schlüssel zum Erfolg war die Adaptierung einer Idee aus der Spieleindustrie, die dort schon lange eingesetzt wird. Hier ein Diagramm der Doom 3 Renderingengine (in scharz-weiß) mit den React-Entsprechungen darüber (blau-weiß).
 
-![](doom3-react.png)
+![Diagramm der Doom 3 Renderingengine](https://raw.githubusercontent.com/paulwittmann/blog-posts/master/images/doom3-react.png)
 
 Mit React kann ich so arbeiten als würde die `render`-Funktion aller Komponenten aufgerufen werden &ndash; bei jedem Aufruf von `setState` an irgend einer Stelle meines Codes. Ich muss mir um DOM-Anpassungen keine Gedanken mehr machen.  
 Aber wie kann das gut gehen? Das Geheimnis heißt virtueller DOM. Die `render`-Funktionen von React-Komponenten modifizieren nicht den tatsächlichen DOM, sondern erzeugen lediglich eine Repräsentation des DOMs.  
@@ -327,14 +337,15 @@ Diese Repräsentationen sind nichts weiter als normale JavaScript-Objekte, die z
         p: { content: 'als würden wir ständig den DOM neurendern' }
       }}
 
-Echte DOM-Anpassungen sind meist _der_ Flaschenhals bei der Renderingperformanz und _können_ derzeit nicht bei jeder Datenänderung ausgelöst werden, wenn man eine nutzbare Seite haben möchte. Was jedoch danke performanten JavaScript-Engines heutzutage geht ist es die Repräsentation des DOMs mit einer früheren zu vergleichen, um dann eine minimale Menge von Änderungen festzulegen, die auf dem echten DOM vorgenommmen werden müssen.
+Echte DOM-Anpassungen sind meist _der_ Flaschenhals bei der Renderingperformanz und _können_ derzeit nicht bei jeder Datenänderung ausgelöst werden, wenn man eine nutzbare Seite haben möchte. Was jedoch dank performanten JavaScript-Engines heutzutage geht, ist es die Repräsentation des DOMs mit einer früheren zu vergleichen, um so minimale Änderungen zu bestimmen, die auf dem echten DOM vorgenommen werden.
 
 Das Problem bei Rendering ohne einen virtuellen DOM ist auch, dass sich nicht gut sagen lässt welche Stelle eines UI-Elements sich geändert hat. Muss ich nur ein Häkchen hinzufügen, oder doch noch eine Zahl verändern? Da sich hier ohne viel unwartbaren Aufwand nicht gut Buch führen lässt, rendern bestehende Lösungen zumindest ihre Bausteine (Views etc.) komplett neu.  
 React ist vor allem performanter da sie präzise DOM-Updates nutzt, obwohl ich sogar davon ausgehen kann, dass die ganze Anwendung neu gerendert wird. Schön :)
 
-Hier ein Beispiel wo links React und rechts Backbon auf eine Texteingabe reagieren. Am Ende des Eingabefelds stehen mathematische Formeln die mit MathJax Texartig gerendert werden - eine teure Rendering-Operation, wie man am Flackern auf der rechten Seite sehen kann. React billiert hier, das die MathJax-Formeln überhaupt nur einmal wirklich neu in den DOM geschrieben werden - sie ändern sich ja nicht. In Backbone wird ständig die ganze View neu in den DOM geschrieben und entsprechend flackert es dort.
+Hier ein Beispiel wo links React und rechts Backbon auf eine Texteingabe reagieren. Am Ende des Eingabefelds stehen mathematische Formeln die mit [KaTeX](https://github.com/Khan/KaTeX) TeX-artig gerendert werden - eine teure Renderingoperation, wie man am Flackern auf der rechten Seite sehen kann. React brilliert hier, das die KaTeX-Formeln überhaupt nur einmal wirklich neu in den DOM geschrieben werden - sie ändern sich ja nicht. In Backbone wird ständig die ganze View neu in den DOM geschrieben und entsprechend flackert es dort.
 
 ![](monkeys-slow.gif)
+(Quelle: ["Hack Reactor"](http://joelburget.com/backbone-to-react/) &ndash; [Joel Burget](https://twitter.com/dino_joel))
 
 Mehr zur Implementierung des virtuellen DOMs in [unserem Artikel ""]().
 
