@@ -1,8 +1,4 @@
 <style>
-  .teaser {
-    background-position: center 55%; // 37%
-    background-image: url(https://farm1.staticflickr.com/398/18425297304_fe8f93b6bf_o.jpg) !important;
-  }
   .teaser h1 {
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
