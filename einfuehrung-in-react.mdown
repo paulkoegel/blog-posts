@@ -2,6 +2,18 @@
 <script src="https://fb.me/react-0.13.3.min.js"></script>
 
 <style>
+  .clearfix {
+    zoom: 1;
+  }
+  .clearfix:before, .clearfix:after {
+    content: ' ';
+    display: block;
+    height: 0;
+    overflow: hidden;
+  }
+  .clearfix:after {
+    clear: both;
+  }
   .teaser h1 {
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
