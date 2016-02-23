@@ -1,11 +1,15 @@
+summary: Als JavaScript–Neuling kann man schnell überfordert sein vom Jargon mit Wörtern wie „module bundlers vs. module-loaders“, „Webpack vs. Browserify“ oder „AMD vs. CommonJS“. Das JavaScript Modulsystem mag zwar einschüchtern, aber es zu verstehen ist für Webentwickler essentiell. In diesem Artikel werde ich diese *Buzzwords* für euch in verständlicher Sprache (und mit einigen Codebeispielen) entwirren. Ich hoffe, es hilft euch! 
+
+---
+
 *Anmerkung: Der Einfachheit wegen ist der Artikel in zwei Teile aufgeteilt: Teil 1 beschäftigt sich damit, was Module sind und wieso wir sie benutzen. Teil 2 erklärt euch, was es bedeutet Module zu bündeln und zeigt verschiedene Wege auf, wie dies geschehen kann.*
 
 
-# Teil 1: „Kann bitte noch mal jemand erklären, was Module sind?“
+# Teil 1: „Kann mir bitte noch mal jemand erklären, was Module sind?“
 
 **Gute Autoren teilen ihre Bücher in Kapitel ein; gute Programmierer teilen ihre Anwendungen in Module ein**.
 
-Wie ein Buchkapitel sind Module nur Sammlungen von Wörtern (hier natürlich eher Code).
+Wie ein Buchkapitel sind Module nur Sammlungen von Wörtern (hier natürlich eher Code).  
 Gute Module sind dabei in sich geschlossen und haben eine distinktive Funktion, was es erlaubt, sie zu verschieben, zu entfernen oder hinzuzufügen – ohne dabei das bestehende System zu gefährden. 
 
 # Wieso Module verwenden?
