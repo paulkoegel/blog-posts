@@ -1,0 +1,38 @@
+<!--
+title: ReactJS.de
+summary: Railslove und 9elements starten gemeinsam ReactJS.de - die erste deutsche React Community.
+-->
+
+Zusammen mit unseren Freunden [9elements](http://9elements.com) haben wir [ReactJS.de](http://reactjs.de) ins Leben gerufen: die erste deutsche React Community. [React](https://facebook.github.io/react) ist eine JavaScript-Frontend-Bibliothek von Facebook, die wir seit ihrem Erscheinen 2013 verfolgen und in unseren Projekten einsetzen. Auf mehreren User Groups und Konferenzen haben wir React schon vorgestellt und begeistert von unseren Erfahrungen berichtet (<a href='#slides'>Folien</a>). Mit ReactJS.de möchten wir diese Begeisterung jetzt noch weiter tragen und der deutschen React Community einen Ort zum Wissensaustausch und Kennenlernen bieten.
+
+Auf ReactJS.de findet ihr neben [Fachartikeln](http://reactjs.de/posts) zu React einen [Eventkalender](http://reactjs.de/events) sowie ein [Entwicklerverzeichnis](http://reactjs.de/users) in das ihr euch eintragen könnt, oder mit dem ihr andere React-Entwickler in eurer Nähe findet.
+
+Die ersten Artikel auf ReactJS.de sind:
+
++ [Einführung in React](http://reactjs.de/posts/einfuehrung-in-react) &ndash; Paul Wittmann
++ [Virtuelles DOM mit React.js](http://reactjs.de/posts/virtuelles-dom-mit-react-js) &ndash; Marcin Skirzynski
++ [React und Babel mit ES6 und ES7](http://reactjs.de/posts/react-und-babel-mit-es6-und-es7) &ndash; Oliver Zeigermann
++ [Backbone / Chaplin und React](http://reactjs.de/posts/backbone-chaplin-und-react) &ndash; Sebastian Deutsch
++ [React Anwendungen mit Webpack entwickeln](http://reactjs.de/posts/react-anwendungen-mit-webpack-entwickeln) &ndash; Nils Hartmann
+
+Wenn ihr ein Wunschthema habt über das wir schreiben sollen, oder selbst einen Artikel beitragen möchtet, meldet euch bei uns auf Twitter ([@reactjs_de](https://twitter.com/reactjs_de)) oder schreibt mich an (<paul@railslove.com>).  
+Wenn ihr euer Wissen über die Artikel hinaus vertiefen wollt, sind vielleicht unsere [Workshops und Schulungen](http://reactjs.de/workshops) zu React was für euch. Wir sind gespannt auf euer Feedback zu ReactJS.de!
+
+<br>
+
+### Unsere React Projekte
++ [Flexbox App](http://www.railslove.com/flexbox): eine interaktive Spielwiese zu Flexbox
++ [Trackle](https://github.com/brumm/trackle): Kalender-Interface für Time Tracker
++ [Omingard](https://github.com/paulwittmann/omingard): Patience Kartenspiel
+
+<a id='slides'>
+### Vortragsfolien zu React
+</a>
+
++ [Einführung in React](https://paulwittmann.github.io/mobile.cologne-2015-04-23-react)
++ [React & Om](https://paulwittmann.github.io/cgnjs-om)
++ [Alien Technology: Ideas from the Clojureverse](https://paulwittmann.github.io/railscamp-2014-alien-technology)
++ [Alien Technology: Ideas from the Clojureverse &ndash; 9elements Edition](https://paulwittmann.github.io/alien-technology-9elements)
+
+#### Bildquelle
++ Titelfoto: [https://commons.wikimedia.org/wiki/File:STS-127_Launch_05.jpg](https://commons.wikimedia.org/wiki/File:STS-127_Launch_05.jpg)
